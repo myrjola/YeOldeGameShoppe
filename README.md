@@ -87,7 +87,7 @@ their games, so that they can analyze how well the game is faring.
 This diagram is aimed at getting a better big picture view of the service. It
 lists the user groups and what features they are using.
 
-![Use Case Diagram](https://git.niksula.hut.fi/kattas1/web_software_project/raw/master/img/UseCaseDescription.png)
+![Use Case Diagram](https://git.niksula.hut.fi/kattas1/web_software_project/raw/master/img/UseCaseDiagram.png)
 
 # Site map
 
