@@ -87,14 +87,14 @@ their games, so that they can analyze how well the game is faring.
 This diagram is aimed at getting a better big picture view of the service. It
 lists the user groups and what features they are using.
 
-![image alt text](img/UseCaseDescription.png)
+![Use Case Diagram](https://git.niksula.hut.fi/kattas1/web_software_project/raw/master/img/UseCaseDescription.png)
 
 # Site map
 
 This gives the sitemap of the modules planned according to the specification
 requirements.
 
-![image alt text](img/SiteMap.png)
+![alt text](https://git.niksula.hut.fi/kattas1/web_software_project/raw/master/img/SiteMap.png)
 
 # Django Views
 
@@ -174,7 +174,7 @@ Breakdown of functionalities
 
 # Django Models
 
-![image alt text](img/DatabaseModel.png)
+![image alt text](https://git.niksula.hut.fi/kattas1/web_software_project/raw/master/img/DatabaseModel.png)
 
 # Feature planning
 
