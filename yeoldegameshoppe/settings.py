@@ -1,5 +1,5 @@
 """
-Django settings for gettingstarted project, on Heroku. Fore more info, see:
+Django settings for yeoldegameshoppe project, on Heroku. Fore more info, see:
 https://github.com/heroku/heroku-django-template
 
 For more information on this file, see
@@ -38,7 +38,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'hello'
+    'hello',
+    'django_jenkins'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -52,7 +53,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.security.SecurityMiddleware',
 )
 
-ROOT_URLCONF = 'gettingstarted.urls'
+ROOT_URLCONF = 'yeoldegameshoppe.urls'
 
 TEMPLATES = [
     {
@@ -70,18 +71,13 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'gettingstarted.wsgi.application'
+WSGI_APPLICATION = 'yeoldegameshoppe.wsgi.application'
 
 
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+DATABASES = {}
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/

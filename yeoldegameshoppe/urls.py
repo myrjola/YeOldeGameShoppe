@@ -7,7 +7,7 @@ import hello.views
 
 urlpatterns = patterns('',
     # Examples:
-    # url(r'^$', 'gettingstarted.views.home', name='home'),
+    # url(r'^$', 'yeoldegameshoppe.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^$', hello.views.index, name='index'),
