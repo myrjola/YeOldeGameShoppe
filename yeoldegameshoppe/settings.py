@@ -38,8 +38,9 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'hello',
-    'django_jenkins'
+    'django_jenkins',
+    'yeoldegameshoppe',
+    'hello'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -90,7 +91,7 @@ USE_TZ = True
 
 
 # Parse database configuration from $DATABASE_URL
-DATABASES['default'] =  dj_database_url.config()
+DATABASES['default'] = dj_database_url.config()
 
 # Enable Connection Pooling (if desired)
 DATABASES['default']['ENGINE'] = 'django_postgrespool'
@@ -124,4 +125,4 @@ JENKINS_TASKS = (
     'django_jenkins.tasks.run_sloccount'
     )
 
-PROJECT_APPS = ('hello',)
+PROJECT_APPS = ('yeoldegameshoppe', 'hello',)
