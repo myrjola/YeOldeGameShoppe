@@ -40,7 +40,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django_jenkins',
     'yeoldegameshoppe',
-    'hello'
+    'yogsauth'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -125,4 +125,4 @@ JENKINS_TASKS = (
     'django_jenkins.tasks.run_sloccount'
     )
 
-PROJECT_APPS = ('yeoldegameshoppe', 'hello',)
+PROJECT_APPS = ('yeoldegameshoppe', 'yogsauth')
