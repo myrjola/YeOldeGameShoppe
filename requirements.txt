@@ -8,3 +8,5 @@ whitenoise==1.0.6
 requests==2.3.0
 django-jenkins==0.18.1
 coverage==4.0.3
+pep8==1.6.2
+pyflakes==1.0.0
