@@ -6,10 +6,16 @@ import yogsauth.views
 
 admin.autodiscover()
 
-urlpatterns = patterns('',
-                       # Examples:
-                       # url(r'^$', 'yeoldegameshoppe.views.home', name='home')
-                       # url(r'^blog/', include('blog.urls'))
+urlpatterns = patterns(
+    '',
+    # Examples:
+    # url(r'^$', 'yeoldegameshoppe.views.home', name='home')
+    # url(r'^blog/', include('blog.urls'))
 
-                       url(r'^$', yogsauth.views.login, name='login'),
-                       url(r'^admin/', include(admin.site.urls)))
+    # yogsauth
+    url('', include('social.apps.django_app.urls', namespace='social')),
+    url(r'^$', yogsauth.views.login, name='login'),
+
+    # admin
+    url(r'^admin/', include(admin.site.urls))
+)

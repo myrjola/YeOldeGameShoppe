@@ -1,9 +1,11 @@
 import os
 
 from django.shortcuts import render
+from django.conf import settings
 
 
 def login(request):
-    facebook_app_id = os.environ['FACEBOOK_APP_ID']
-    return render(request, 'login.djhtml',
-                  context={'facebook_app_id': facebook_app_id})
+    return render(
+        request,
+        'login.djhtml',
+        context={'facebook_app_id': settings.SOCIAL_AUTH_FACEBOOK_APP_KEY})

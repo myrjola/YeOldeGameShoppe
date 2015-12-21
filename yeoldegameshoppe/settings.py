@@ -39,6 +39,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_jenkins',
+    'social.apps.django_app.default',
+    # Project apps below
     'yeoldegameshoppe',
     'yogsauth'
 )
@@ -126,3 +128,19 @@ JENKINS_TASKS = (
     )
 
 PROJECT_APPS = ('yeoldegameshoppe', 'yogsauth')
+
+# yogsauth related settings
+
+SOCIAL_AUTH_FACEBOOK_APP_KEY = os.environ['FACEBOOK_APP_ID']
+SOCIAL_AUTH_FACEBOOK_APP_SECRET = os.environ['FACEBOOK_API_SECRET']
+SOCIAL_AUTH_FACEBOOK_APP_NAMESPACE = 'yeoldegameshoppe'
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+
+AUTHENTICATION_BACKENDS = (
+    'social.backends.facebook.FacebookOAuth2',
+)
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'social.apps.django_app.context_processors.backends',
+    'social.apps.django_app.context_processors.login_redirect'
+)
