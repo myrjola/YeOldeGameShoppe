@@ -16,6 +16,7 @@
     - postgresql-devel
     - python-psycopg2
     - npm
+    - sloccount
 
 - name: download pip installer
   get_url: url=https://bootstrap.pypa.io/get-pip.py dest={{ pip_installer_path }}
