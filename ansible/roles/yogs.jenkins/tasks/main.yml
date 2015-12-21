@@ -1,0 +1,41 @@
+---
+- name: upgrade all packages
+  yum: name=* state=latest
+
+- name: install EPEL repository
+  yum: name=epel-release state=latest
+
+- name: install dependencies
+  yum: name={{ item }} state=latest
+  with_items:
+    - git
+    - python34
+    - python34-devel
+    - postgresql-server
+    - postgresql-contrib
+    - postgresql-devel
+    - python-psycopg2
+    - npm
+
+- name: download pip installer
+  get_url: url=https://bootstrap.pypa.io/get-pip.py dest={{ pip_installer_path }}
+
+- name: run pip installer
+  command: python3.4 {{ pip_installer_path }}
+
+- name: setup postgresql
+  command: postgresql-setup initdb
+  ignore_errors: yes
+
+- name: start postgresql
+  service: name=postgresql state=started enabled=yes
+
+- name: ensure user can create databases
+  postgresql_user: name=jenkins role_attr_flags=CREATEDB
+  sudo_user: postgres
+
+- name: install node linters
+  npm: name={{ item }} global=yes
+  with_items:
+    - jshint
+    - csslint
