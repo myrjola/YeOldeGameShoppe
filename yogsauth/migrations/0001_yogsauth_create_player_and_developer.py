@@ -15,14 +15,16 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Developer',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', primary_key=True, serialize=False, auto_created=True)),
+                ('id', models.AutoField(verbose_name='ID', primary_key=True,
+                                        serialize=False, auto_created=True)),
                 ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL)),
             ],
         ),
         migrations.CreateModel(
             name='Player',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', primary_key=True, serialize=False, auto_created=True)),
+                ('id', models.AutoField(verbose_name='ID', primary_key=True,
+                                        serialize=False, auto_created=True)),
                 ('gamertag', models.CharField(max_length=32, unique=True)),
                 ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL)),
             ],
