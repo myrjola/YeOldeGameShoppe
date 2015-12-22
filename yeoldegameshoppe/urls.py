@@ -15,6 +15,7 @@ urlpatterns = patterns(
     # yogsauth
     url('', include('social.apps.django_app.urls', namespace='social')),
     url(r'^login$', yogsauth.views.auth_login, name='login'),
+    url(r'^logout$', yogsauth.views.auth_login, name='logout'),
     url(r'^accounts/profile/$', yogsauth.views.profile, name='profile'),
 
     # admin
