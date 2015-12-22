@@ -3,6 +3,44 @@
 
 {% block content %}
 
-<h1 id="fb-welcome">Welcome!</h1>
+{% if user.is_authenticated %}
+<p>Welcome, {{ user.username }}. Thanks for logging in.</p>
+{% else %}
+<div id="login">
+    <p>Welcome, new user. Please log in.</p>
+    {% if invalid_credentials %}
+    <div class="alert alert-danger">
+        <strong>Error!</strong> Wrong credentials supplied.
+    </div>
+    {% endif %}
+    <form class="form-horizontal" name="LoginForm" action="/login" method="post">
+        {% csrf_token %}
+        {% if redirect %}
+        <input type="hidden" name="redirect" value="{{ redirect }}" />
+        {% endif %}
+        <div class="control-group">
+            <label class="control-label" for="username">Username</label>
+            <div class="controls">
+                <input type="text" id="username" name="username"  placeholder="Username">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="password">Password</label>
+            <div class="controls">
+                <input type="password" name="password" id="password" placeholder="Password">
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="controls">
+                <button type="submit" class="btn">Login</button>
+            </div>
+        </div>
+        <div class="control-group">
+            <a href="/login/facebook" type="button" class="btn btn-primary">Login with Facebook</a>
+        </div>
+    </form>
+</div>
+
+{% endif %}
 
 {% endblock %}
