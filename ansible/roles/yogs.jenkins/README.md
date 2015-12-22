@@ -26,9 +26,6 @@ source venv/bin/activate
 # Install dependencies
 pip install -r requirements.txt
 
-# Load environment
-export DATABASE_URL=postgres:///yeoldegameshoppe
-
 # Run tests
 python manage.py migrate
 python manage.py jenkins

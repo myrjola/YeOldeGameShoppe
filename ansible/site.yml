@@ -11,6 +11,7 @@
       - cobertura
       - violations
       - sloccount
+      - environment-script
   roles:
     - yogs.jenkins
     - geerlingguy.jenkins
