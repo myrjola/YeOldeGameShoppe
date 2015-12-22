@@ -17,4 +17,4 @@ def profile(request):
     return render(
         request,
         'profile.djhtml',
-        context={'facebook_app_id': settings.SOCIAL_AUTH_FACEBOOKd_KEY})
+        context={'facebook_app_id': settings.SOCIAL_AUTH_FACEBOOK_KEY})
