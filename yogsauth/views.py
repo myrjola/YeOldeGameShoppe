@@ -24,22 +24,25 @@ def auth_login(request):
     """Login user"""
 
     next = ''
-    if 'next' in request.POST:
-        next = request.POST['next']
-    elif 'redirect' in request.GET:
-        next = request.GET['next']
+    for querydict in (request.POST, request.GET):
+        if 'next' in querydict:
+            next = querydict['next']
     nextpage = next or reverse("profile")
     if request.user.is_authenticated():
         return HttpResponseRedirect(nextpage)
 
-    context = {}
+    auth_form = AuthenticationForm(data=request.POST or None)
+
+    context = {"auth_form": auth_form}
+
+    print(auth_form)
+    print(auth_form.is_valid())
+
+    if auth_form.is_valid():
+        login(request, auth_form.get_user())
+        return HttpResponseRedirect(nextpage)
 
     if request.POST:
-
-        auth_form = AuthenticationForm(data=request.POST)
-        if auth_form.is_valid():
-            login(request, auth_form.get_user())
-            return HttpResponseRedirect(nextpage)
         context['invalid_credentials'] = True
 
     return render(request, 'login.djhtml', context=context)
