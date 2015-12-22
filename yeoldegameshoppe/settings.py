@@ -137,7 +137,8 @@ SOCIAL_AUTH_FACEBOOK_APP_NAMESPACE = 'yeoldegameshoppe'
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 
 AUTHENTICATION_BACKENDS = (
-    'social.backends.facebook.FacebookOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+    'social.backends.facebook.FacebookOAuth2'
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
