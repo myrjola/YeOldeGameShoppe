@@ -1,0 +1,4 @@
+export DATABASE_URL=postgres:///yeoldegameshoppe
+export DJANGO_SETTINGS_MODULE=yeoldegameshoppe.settings
+export FACEBOOK_APP_ID=app_id
+export FACEBOOK_API_SECRET=secret
