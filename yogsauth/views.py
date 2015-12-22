@@ -19,12 +19,12 @@ def auth_logout(request):
 def auth_login(request):
     """Login user"""
 
-    redirect = ''
-    if 'redirect' in request.POST:
-        redirect = request.POST['redirect']
+    next = ''
+    if 'next' in request.POST:
+        next = request.POST['next']
     elif 'redirect' in request.GET:
-        redirect = request.GET['redirect']
-    nextpage = redirect or reverse("profile")
+        next = request.GET['next']
+    nextpage = next or reverse("profile")
     if request.user.is_authenticated():
         return HttpResponseRedirect(nextpage)
 
