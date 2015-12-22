@@ -1,8 +1,12 @@
+import logging
+
 from django.shortcuts import render
 from django.conf import settings
 
 from social.apps.django_app.views import complete as social_complete
 from social.backends.facebook import FacebookOAuth2
+
+logger = logging.getLogger(__name__)
 
 
 def login(request):
@@ -13,8 +17,9 @@ def login(request):
 
 
 def facebook(request):
+    logger.info(request.backend)
     complete = social_complete(request, FacebookOAuth2)
-    print(complete)
+    logger.info(complete)
     return render(
         request,
         'login.djhtml',
