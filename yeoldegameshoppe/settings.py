@@ -31,6 +31,8 @@ TEMPLATE_DEBUG = True
 
 # Application definition
 
+PROJECT_APPS = ('yeoldegameshoppe', 'yogsbase', 'yogsauth')
+
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
@@ -41,10 +43,7 @@ INSTALLED_APPS = (
     'django_jenkins',
     'social.apps.django_app.default',
     # Project apps below
-    'yeoldegameshoppe',
-    'yogsbase',
-    'yogsauth'
-)
+) + PROJECT_APPS
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -128,8 +127,6 @@ JENKINS_TASKS = (
     'django_jenkins.tasks.run_csslint',
     'django_jenkins.tasks.run_sloccount'
     )
-
-PROJECT_APPS = ('yeoldegameshoppe', 'yogsauth')
 
 # yogsauth related settings
 

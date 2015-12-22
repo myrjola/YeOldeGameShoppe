@@ -3,9 +3,6 @@
 
 {% block content %}
 
-{% if user.is_authenticated %}
-<p>Welcome, {{ user.username }}. Thanks for logging in.</p>
-{% else %}
 <div id="login">
     <p>Welcome, new user. Please log in.</p>
     {% if invalid_credentials %}
@@ -40,7 +37,5 @@
         </div>
     </form>
 </div>
-
-{% endif %}
 
 {% endblock %}
