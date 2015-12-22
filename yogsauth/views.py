@@ -14,13 +14,3 @@ def login(request):
         request,
         'login.djhtml',
         context={'facebook_app_id': settings.SOCIAL_AUTH_FACEBOOK_APP_KEY})
-
-
-def facebook(request):
-    logger.info(request.backend)
-    complete = social_complete(request, FacebookOAuth2)
-    logger.info(complete)
-    return render(
-        request,
-        'login.djhtml',
-        context={'facebook_app_id': settings.SOCIAL_AUTH_FACEBOOK_APP_KEY})
