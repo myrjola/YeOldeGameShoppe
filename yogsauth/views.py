@@ -6,6 +6,8 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
+
 
 logger = logging.getLogger(__name__)
 
@@ -41,6 +43,7 @@ def auth_login(request):
     return render(request, 'login.djhtml', context=context)
 
 
+@login_required
 def profile(request):
     """Profile page"""
     return render(request, 'profile.djhtml')
