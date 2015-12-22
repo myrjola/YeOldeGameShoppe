@@ -4,12 +4,7 @@ A game store, which can easily be deployed to Heroku.
 
 ## Running Locally
 
-Make sure you have Python [installed properly](http://install.python-guide.org).
-Also, install the [Heroku Toolbelt](https://toolbelt.heroku.com/) and
-[Postgres](https://devcenter.heroku.com/articles/heroku-postgresql#local-setup).
-It's recommended to use a
-[virtualenv](http://docs.python-guide.org/en/latest/dev/virtualenvs/) with
-Python.
+Make sure you have Python [installed properly](http://install.python-guide.org). Also, install the [Heroku Toolbelt](https://toolbelt.heroku.com/) and [Postgres](https://devcenter.heroku.com/articles/heroku-postgresql#local-setup). It's recommended to use a [virtualenv](http://docs.python-guide.org/en/latest/dev/virtualenvs/) with Python.
 
 ```sh
 $ pip install -r requirements.txt
