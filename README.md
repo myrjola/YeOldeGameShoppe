@@ -24,6 +24,18 @@ $ git push heroku master
 $ heroku run python manage.py migrate
 $ heroku open
 ```
+
 or
 
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+
+## Facebook login support
+
+We use [Python Social Auth](http://python-social-auth.readthedocs.org/en/stable/backends/facebook.html?highlight=facebook) to implement Facebook login. You need to register a Facebook app at [Facebook App Creation](http://developers.facebook.com/setup/) and set the app variables to Heroku like this:
+
+```sh
+$ heroku config:set FACEBOOK_APP_ID=*your_facebook_app_id*
+$ heroku config:set FACEBOOK_API_SECRET=*your_facebook_api_secret*
+```
+
+Remember to set the Site URL in the Facebook app settings to the URL of your Heroku deployment.
