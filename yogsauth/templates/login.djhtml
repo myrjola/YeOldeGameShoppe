@@ -3,6 +3,6 @@
 
 {% block content %}
 
-<h1 id="fb-welcome"></h1>
+<h1 id="fb-welcome">Welcome!</h1>
 
 {% endblock %}
