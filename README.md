@@ -10,7 +10,7 @@ Make sure you have Python [installed properly](http://install.python-guide.org).
 $ pip install -r requirements.txt
 $ createdb python_getting_started
 $ heroku local:run python manage.py migrate
-$ python manage.py collectstatic
+$ heroku local:run python manage.py collectstatic
 $ heroku local
 ```
 
