@@ -43,6 +43,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django_jenkins',
     'social.apps.django_app.default',
+    'bootstrap3',
     # Project apps below
 ) + PROJECT_APPS
 

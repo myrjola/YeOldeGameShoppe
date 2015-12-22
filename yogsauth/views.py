@@ -8,6 +8,8 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 
+from .forms import UserCreationObligatoryEmailForm
+
 
 logger = logging.getLogger(__name__)
 
@@ -47,3 +49,15 @@ def auth_login(request):
 def profile(request):
     """Profile page"""
     return render(request, 'profile.djhtml')
+
+
+def register(request):
+    """Register user"""
+    logout(request)
+    registration_form = UserCreationObligatoryEmailForm(request.POST or None)
+    if registration_form.is_valid():
+        user = registration_form.save()
+        return HttpResponseRedirect(reverse('profile'))
+
+    return render(request, 'register.djhtml',
+                  context={'registration_form': registration_form})

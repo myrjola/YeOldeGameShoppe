@@ -11,3 +11,4 @@ coverage==4.0.3
 pep8==1.6.2
 pyflakes==1.0.0
 python-social-auth==0.2.13
+django-bootstrap3==6.2.2
