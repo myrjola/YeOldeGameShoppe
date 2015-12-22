@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.conf import settings
 
-from social_auth.views import complete as social_complete
+from social.apps.django_app.views import complete as social_complete
 from social.backends.facebook import FacebookOAuth2
 
 
