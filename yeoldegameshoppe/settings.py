@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'social.apps.django_app.default',
     # Project apps below
     'yeoldegameshoppe',
+    'yogsbase',
     'yogsauth'
 )
 
@@ -61,7 +62,6 @@ ROOT_URLCONF = 'yeoldegameshoppe.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
