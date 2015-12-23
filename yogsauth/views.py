@@ -1,6 +1,7 @@
 import logging
 
-from django.shortcuts import render
+from django.shortcuts import (render, get_object_or_404)
+from django.utils import timezone
 from django.contrib.auth import login
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.urlresolvers import reverse
@@ -9,6 +10,7 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 
 from .forms import UserCreationObligatoryEmailForm
+from .models import EmailValidation
 
 
 logger = logging.getLogger(__name__)
@@ -59,3 +61,15 @@ def register(request):
 
     return render(request, 'register.djhtml',
                   context={'registration_form': registration_form})
+
+
+def activate(request, user_id, activation_key):
+    """Activate user with link sent to email"""
+    email_validation = get_object_or_404(EmailValidation,
+                                         activation_key=activation_key)
+    user = email_validation.user
+    if not user.is_active:
+        if timezone.now() < email_validation.key_expires:
+            user.is_active = True
+            user.save()
+            return HttpResponseRedirect(reverse('login'))

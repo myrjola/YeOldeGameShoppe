@@ -16,6 +16,8 @@ urlpatterns = patterns(
     url(r'^logout$', yogsauth.views.auth_logout, name='logout'),
     url(r'^profile/$', yogsauth.views.profile, name='profile'),
     url(r'^register$', yogsauth.views.register, name='register'),
+    url(r'^activate/(?P<user_id>\d+)/(?P<activation_key>.+)$', yogsauth.views.activate,
+        name='activate'),
 
     # admin
     url(r'^admin/', include(admin.site.urls))
