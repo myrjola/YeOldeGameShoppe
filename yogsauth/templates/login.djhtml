@@ -4,12 +4,12 @@
 
 {% block content %}
 <p>Welcome! Please log in.</p>
-{% if invalid_credentials %}
+{% if auth_form.errors %}
 <div class="alert alert-danger">
-    <strong>Error!</strong> Wrong credentials supplied.
+    <strong>Error!</strong> {{ form.errors }}
 </div>
 {% endif %}
-<form action={% url 'profile' %} method="post" class="form">
+<form action={% url 'login' %} method="post" class="form">
     {% csrf_token %}
     {% if next %}
     <input type="hidden" name="next" value="{{ next }}" />
