@@ -54,9 +54,7 @@ def register(request):
     logout(request)
     registration_form = UserCreationObligatoryEmailForm(request.POST or None)
     if registration_form.is_valid():
-        user = registration_form.save(commit=False)
-        user.active = False
-        user.save()
+        registration_form.save()
         return HttpResponseRedirect(reverse('profile'))
 
     return render(request, 'register.djhtml',
