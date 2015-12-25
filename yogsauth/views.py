@@ -1,28 +1,23 @@
-import logging
-
 from django.shortcuts import (render, get_object_or_404)
 from django.utils import timezone
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
-from django.core.mail import send_mail
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
 
 
 from .forms import (UserCreationObligatoryEmailForm,
-                    AuthenticationFormAllowInactiveUsers)
+                    EmailValidationAuthenticationForm)
 from .models import EmailValidation
-
-
-logger = logging.getLogger(__name__)
+from .utils import send_activation_email_to_user
 
 
 @login_required
 def profile(request):
-    """Profile page"""
+    """Profile page."""
     return render(request, 'profile.djhtml')
 
 
@@ -30,12 +25,13 @@ def profile(request):
 @csrf_protect
 @never_cache
 def register(request):
-    """Register user"""
+    """Register user."""
     logout(request)
     registration_form = UserCreationObligatoryEmailForm(request.POST or None)
     if registration_form.is_valid():
-        registration_form.save()
-        return HttpResponseRedirect(reverse('profile'))
+        user = registration_form.save()
+        send_activation_email_to_user(user, request)
+        return HttpResponseRedirect("%s?validation_email_sent=1" % reverse('login'))
 
     return render(request, 'register.djhtml',
                   context={'registration_form': registration_form})
@@ -43,7 +39,7 @@ def register(request):
 
 @csrf_protect
 def activate(request, user_id, activation_key):
-    """Activate user with link sent to email"""
+    """Activate user with link sent to email."""
     email_validation = get_object_or_404(EmailValidation,
                                          activation_key=activation_key)
     user = email_validation.user
@@ -62,21 +58,18 @@ def send_activation_email(request):
 
     Requires the user to be authenticated.
     """
-    form = AuthenticationFormAllowInactiveUsers(request,
-                                                data=request.POST or None)
+    form = EmailValidationAuthenticationForm(request,
+                                             data=request.POST or None)
     context = {'form': form}
 
     if request.method == "POST":
         if form.is_valid():
             user = form.get_user()
-            activation_key = user.emailvalidation.activation_key
-            activation_link = (request.get_host() +
-                               reverse('activate',
-                                       kwargs={
-                                           'user_id': user.id,
-                                           'activation_key': activation_key
-                                       }))
-            send_mail('Ye Olde Game Shoppe activation', activation_link,
-                      'yeoldegameshoppe', [user.email], fail_silently=False)
+            email = form.cleaned_data["email"]
+            if form.cleaned_data["email"]:
+                # User wants to change his/her email address.
+                user.email = email
+                user.save()
+            send_activation_email_to_user(user, request)
 
     return render(request, 'send_activation_email.djhtml', context=context)
