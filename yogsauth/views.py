@@ -6,8 +6,14 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
+from django.core.mail import send_mail
+from django.views.decorators.cache import never_cache
+from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.debug import sensitive_post_parameters
 
-from .forms import UserCreationObligatoryEmailForm
+
+from .forms import (UserCreationObligatoryEmailForm,
+                    AuthenticationFormAllowInactiveUsers)
 from .models import EmailValidation
 
 
@@ -20,6 +26,9 @@ def profile(request):
     return render(request, 'profile.djhtml')
 
 
+@sensitive_post_parameters()
+@csrf_protect
+@never_cache
 def register(request):
     """Register user"""
     logout(request)
@@ -32,6 +41,7 @@ def register(request):
                   context={'registration_form': registration_form})
 
 
+@csrf_protect
 def activate(request, user_id, activation_key):
     """Activate user with link sent to email"""
     email_validation = get_object_or_404(EmailValidation,
