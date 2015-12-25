@@ -42,3 +42,31 @@ def activate(request, user_id, activation_key):
             user.is_active = True
             user.save()
             return HttpResponseRedirect(reverse('login'))
+
+
+@sensitive_post_parameters()
+@csrf_protect
+@never_cache
+def send_activation_email(request):
+    """Sends an email with account activation link.
+
+    Requires the user to be authenticated.
+    """
+    form = AuthenticationFormAllowInactiveUsers(request,
+                                                data=request.POST or None)
+    context = {'form': form}
+
+    if request.method == "POST":
+        if form.is_valid():
+            user = form.get_user()
+            activation_key = user.emailvalidation.activation_key
+            activation_link = (request.get_host() +
+                               reverse('activate',
+                                       kwargs={
+                                           'user_id': user.id,
+                                           'activation_key': activation_key
+                                       }))
+            send_mail('Ye Olde Game Shoppe activation', activation_link,
+                      'yeoldegameshoppe', [user.email], fail_silently=False)
+
+    return render(request, 'send_activation_email.djhtml', context=context)

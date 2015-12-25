@@ -3,13 +3,10 @@
 {% load bootstrap3 %}
 
 {% block content %}
-<p>Welcome! Please log in.</p>
-{% if auth_form.errors %}
-<div class="alert alert-danger">
-    <strong>Error!</strong> {{ form.errors }}
-</div>
-{% endif %}
-<form action={% url 'login' %} method="post" class="form">
+
+<p>{{ greeting|default:"Welcome! Please log in." }}</p>
+
+<form action={% url form_action|default:"login" %} method="post" class="form">
     {% csrf_token %}
     {% if next %}
     <input type="hidden" name="next" value="{{ next }}" />

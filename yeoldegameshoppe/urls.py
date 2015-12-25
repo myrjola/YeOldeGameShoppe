@@ -22,6 +22,8 @@ urlpatterns = patterns(
     url(r'^register$', yogsauth.views.register, name='register'),
     url(r'^activate/(?P<user_id>\d+)/(?P<activation_key>.+)$',
         yogsauth.views.activate, name='activate'),
+    url(r'^send_activation_email', yogsauth.views.send_activation_email,
+        name='send_activation_email'),
 
     # admin
     url(r'^admin/', include(admin.site.urls))

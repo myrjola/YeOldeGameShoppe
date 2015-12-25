@@ -5,7 +5,7 @@ import datetime
 from django import forms
 from django.utils import timezone
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
 from .models import EmailValidation
 
@@ -42,3 +42,9 @@ class UserCreationObligatoryEmailForm(UserCreationForm):
         email_validation.save()
 
         return user
+
+
+class AuthenticationFormAllowInactiveUsers(AuthenticationForm):
+    """Allows authentication of inactive users."""
+    def confirm_login_allowed(self, user):
+        pass
