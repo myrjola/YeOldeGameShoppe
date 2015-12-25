@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
+from django.http import Http404
 
 
 from .forms import (UserCreationObligatoryEmailForm,
@@ -31,7 +32,7 @@ def register(request):
     if registration_form.is_valid():
         user = registration_form.save()
         send_activation_email_to_user(user, request)
-        return HttpResponseRedirect("%s?validation_email_sent=1" % reverse('login'))
+        return validation_email_sent_redirect()
 
     return render(request, 'register.djhtml',
                   context={'registration_form': registration_form})
@@ -48,6 +49,11 @@ def activate(request, user_id, activation_key):
             user.is_active = True
             user.save()
             return HttpResponseRedirect(reverse('login'))
+
+        return HttpResponseRedirect(
+            "%s?activation_token_expired=1" % reverse('send_activation_email'))
+
+    raise Http404("Invalid validation URL.")
 
 
 @sensitive_post_parameters()
@@ -71,5 +77,12 @@ def send_activation_email(request):
                 user.email = email
                 user.save()
             send_activation_email_to_user(user, request)
+            return validation_email_sent_redirect()
 
     return render(request, 'send_activation_email.djhtml', context=context)
+
+
+def validation_email_sent_redirect():
+    """Redirect to login page when validation email has been sent."""
+    return HttpResponseRedirect("%s?validation_email_sent=1" %
+                                reverse('login'))

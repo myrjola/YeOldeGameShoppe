@@ -15,6 +15,13 @@
     </div>
 {% endif %}
 
+{% if request.GET.activation_token_expired %}
+    <div class="alert alert-danger">
+        <strong>Token expired!</strong>
+        You need to request another validation email.
+    </div>
+{% endif %}
+
 <form action={% url form_action|default:"login" %} method="post" class="form">
     {% csrf_token %}
     {% if next %}
