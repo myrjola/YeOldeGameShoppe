@@ -5,7 +5,7 @@ from django.conf import settings
 class EmailValidation(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL,
                                 on_delete=models.CASCADE)
-    activation_key = models.CharField(max_length=24)
+    activation_key = models.CharField(max_length=40)
     key_expires = models.DateTimeField()
 
 
