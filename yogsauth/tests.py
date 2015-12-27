@@ -1,7 +1,11 @@
+from datetime import timedelta
+
+from django.utils import timezone
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 
-from .models import (Player, Developer)
+from .models import (Player, Developer, EmailValidation)
+from .utils import generate_email_validation_token_for_user
 
 
 class PlayerTestCase(TestCase):
@@ -42,3 +46,34 @@ class DeveloperTestCase(TestCase):
         developer.delete()
         user = get_user_model().objects.get(username="user")
         self.assertFalse(hasattr(user, 'developer'))
+
+
+class EmailValidationTestCase(TestCase):
+    def setUp(self):
+        self.user = get_user_model().objects.create(username="user")
+        self.user.is_active = False
+        generate_email_validation_token_for_user(self.user)
+        self.emailvalidation = self.user.emailvalidation
+
+    def test_activation_against_active_user(self):
+        """Validating an active user should not be possible."""
+        self.user.is_active = True
+        with self.assertRaises(EmailValidation.UserActiveException):
+            self.emailvalidation.activate_user_against_token("wrong")
+
+    def test_activation(self):
+        """Activating an user should work provided the token is correct."""
+        with self.assertRaises(EmailValidation.IncorrectTokenException):
+            self.emailvalidation.activate_user_against_token("wrong")
+
+        correct_token = self.emailvalidation.activation_key
+        self.emailvalidation.activate_user_against_token(correct_token)
+        self.assertTrue(self.user.is_active)
+
+    def test_token_expiration(self):
+        """The user can't be activated when the token has expired."""
+        self.emailvalidation.key_expires = timezone.now()-timedelta(minutes=1)
+
+        correct_token = self.emailvalidation.activation_key
+        with self.assertRaises(EmailValidation.KeyExpiredException):
+            self.emailvalidation.activate_user_against_token(correct_token)

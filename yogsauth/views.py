@@ -2,7 +2,7 @@ from django.shortcuts import (render, get_object_or_404)
 from django.utils import timezone
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
-from django.contrib.auth import logout
+from django.contrib.auth import logout, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
@@ -32,7 +32,7 @@ def register(request):
     if registration_form.is_valid():
         user = registration_form.save()
         send_activation_email_to_user(user, request)
-        return validation_email_sent_redirect()
+        return validation_email_sent_redirect
 
     return render(request, 'register.djhtml',
                   context={'registration_form': registration_form})
@@ -41,19 +41,20 @@ def register(request):
 @csrf_protect
 def activate(request, user_id, activation_key):
     """Activate user with link sent to email."""
-    email_validation = get_object_or_404(EmailValidation,
-                                         activation_key=activation_key)
-    user = email_validation.user
-    if not user.is_active:
-        if timezone.now() < email_validation.key_expires:
-            user.is_active = True
-            user.save()
-            return HttpResponseRedirect(reverse('login'))
+    user = get_object_or_404(get_user_model(), id=user_id)
 
+    try:
+        user.emailvalidation.activate_user_against_token(activation_key)
+    except EmailValidation.KeyExpiredException:
         return HttpResponseRedirect(
             "%s?activation_token_expired=1" % reverse('send_activation_email'))
+    except EmailValidation.UserActiveException:
+        return HttpResponseRedirect(
+            "%s?user_already_activated=1" % reverse('login'))
+    except EmailValidation.IncorrectTokenException:
+        raise Http404("Invalid activation token.")
 
-    raise Http404("Invalid validation URL.")
+    return HttpResponseRedirect(reverse('login'))
 
 
 @sensitive_post_parameters()
