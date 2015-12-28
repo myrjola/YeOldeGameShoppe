@@ -1,5 +1,5 @@
 from django.shortcuts import (render, get_object_or_404)
-from django.utils import timezone
+from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.contrib.auth import logout, get_user_model
@@ -13,7 +13,8 @@ from django.http import Http404
 from .forms import (UserCreationObligatoryEmailForm,
                     EmailValidationAuthenticationForm)
 from .models import EmailValidation
-from .utils import send_activation_email_to_user
+from .utils import (send_activation_email_to_user,
+                    get_activation_link_for_user_and_request)
 
 
 @login_required
@@ -32,7 +33,7 @@ def register(request):
     if registration_form.is_valid():
         user = registration_form.save()
         send_activation_email_to_user(user, request)
-        return validation_email_sent_redirect
+        return validation_email_sent_redirect(user, request)
 
     return render(request, 'register.djhtml',
                   context={'registration_form': registration_form})
@@ -78,12 +79,20 @@ def send_activation_email(request):
                 user.email = email
                 user.save()
             send_activation_email_to_user(user, request)
-            return validation_email_sent_redirect()
+            return validation_email_sent_redirect(user, request)
 
     return render(request, 'send_activation_email.djhtml', context=context)
 
 
-def validation_email_sent_redirect():
+def validation_email_sent_redirect(user, request):
     """Redirect to login page when validation email has been sent."""
-    return HttpResponseRedirect("%s?validation_email_sent=1" %
-                                reverse('login'))
+    url = "%s?validation_email_sent_to=%s" % (reverse('login'), user.email)
+
+    # If we are using the console backend we want the email's contents to be
+    # shown for the user.
+    email_backend = settings.EMAIL_BACKEND
+    if email_backend == 'django.core.mail.backends.console.EmailBackend':
+        link = get_activation_link_for_user_and_request(user, request)
+        url += "&debug_activation_email_contents=%s" % link
+
+    return HttpResponseRedirect(url)

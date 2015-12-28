@@ -41,12 +41,16 @@ def generate_email_validation_token_for_user(user):
 def send_activation_email_to_user(user, request):
     """Send a link that will activate the user account."""
     generate_email_validation_token_for_user(user)
-    activation_key = user.emailvalidation.activation_key
-    activation_link = (request.get_host() +
-                       reverse('activate',
-                               kwargs={
-                                   'user_id': user.id,
-                                   'activation_key': activation_key
-                               }))
+    activation_link = get_activation_link_for_user_and_request(user, request)
     send_mail('Ye Olde Game Shoppe activation', activation_link,
               'yeoldegameshoppe', [user.email], fail_silently=False)
+
+
+def get_activation_link_for_user_and_request(user, request):
+    """Returns the link that activates the user."""
+    activation_key = user.emailvalidation.activation_key
+    return request.get_host() + reverse('activate',
+                                        kwargs={
+                                            'user_id': user.id,
+                                            'activation_key': activation_key
+                                        })

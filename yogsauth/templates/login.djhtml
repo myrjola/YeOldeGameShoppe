@@ -6,12 +6,15 @@
 
 <p>{{ greeting|default:"Welcome! Please log in." }}</p>
 
-{% if request.GET.validation_email_sent %}
+{% if request.GET.validation_email_sent_to %}
     <div class="alert alert-info">
         <strong>Check your inbox.</strong>
-        A validation email has been sent to your email address. If you
-        can't find it even in the spam folder you can send another one
-        from <a href='{% url 'send_activation_email' %}'>here</a>.
+        A validation email has been sent to {{ request.GET.validation_email_sent_to }}.
+        If you can't find it even in the spam folder you can send another
+        one from <a href='{% url 'send_activation_email' %}'>here</a>.
+        {% if request.GET.debug_activation_email_contents %}
+            Email content: {{ request.GET.debug_activation_email_contents }}
+        {% endif %}
     </div>
 {% endif %}
 
