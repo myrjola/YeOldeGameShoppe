@@ -11,7 +11,7 @@
         <strong>Check your inbox.</strong>
         A validation email has been sent to {{ request.GET.validation_email_sent_to }}.
         If you can't find it even in the spam folder you can send another
-        one from <a href='{% url 'send_activation_email' %}'>here</a>.
+        one from <a href="{% url 'send_activation_email' %}">here</a>.
         {% if request.GET.debug_activation_email_contents %}
             Email content: {{ request.GET.debug_activation_email_contents }}
         {% endif %}
@@ -43,4 +43,8 @@
     <a href="/login/facebook" type="button" class="btn btn-primary">Login with Facebook</a>
     {% endbuttons %}
 </form>
+
+<div>
+    <a href="{% url 'password_reset' %}">Forgot your password?</a>
+</div>
 {% endblock %}

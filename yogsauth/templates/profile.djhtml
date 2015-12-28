@@ -1,5 +1,7 @@
 {% extends "base.djhtml" %}
 {% load staticfiles %}
+{% load bootstrap3 %}
+
 
 {% block content %}
     <h1> Welcome {{ request.user.username }}!</h1>
@@ -8,5 +10,10 @@
         data-share="true"
         data-width="450"
         data-show-faces="true">
+    </div>
+    <div>
+        <a href="{% url 'password_change' %}" type="button" class="btn">
+            Change your password
+        </a>
     </div>
 {% endblock %}
