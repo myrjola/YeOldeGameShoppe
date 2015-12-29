@@ -19,6 +19,14 @@ class PlayerForm(ModelForm):
 
 
 class DeveloperForm(ModelForm):
+    # The IBAN is 34 alphanumeric characters long
+    iban_length = Developer._meta.get_field('iban').max_length
+    iban = forms.fields.CharField(min_length=iban_length,
+                                  max_length=iban_length)
+    # The SWIFT-BIC code is between 8 and 11 characters
+    swift_length = Developer._meta.get_field('swift').max_length
+    swift = forms.fields.CharField(min_length=8, max_length=swift_length)
+
     class Meta:
         model = Developer
         fields = ['iban', 'swift']
