@@ -44,12 +44,19 @@ class Developer(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL,
                                 on_delete=models.CASCADE)
 
+    iban = models.fields.CharField(
+        max_length=34,
+        verbose_name="IBAN",
+        help_text="Your sales proceedings will be paid here.")
+
+    swift = models.fields.CharField(max_length=11,
+                                    verbose_name="SWIFT or BIC code")
+
 
 class Player(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL,
                                 on_delete=models.CASCADE)
-    gamertag = models.fields.CharField(max_length=32,
-                                       unique=True)
+    gamertag = models.fields.CharField(max_length=32, unique=True)
 
     def get_name_for_high_score(self):
         return self.gamertag or self.user.username

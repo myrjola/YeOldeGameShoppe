@@ -1,6 +1,27 @@
 from django import forms
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.forms.models import ModelForm
+
+from .models import Player, Developer
+
+
+class UserForm(ModelForm):
+    class Meta:
+        model = get_user_model()
+        fields = ['email']
+
+
+class PlayerForm(ModelForm):
+    class Meta:
+        model = Player
+        fields = ['gamertag']
+
+
+class DeveloperForm(ModelForm):
+    class Meta:
+        model = Developer
+        fields = ['iban', 'swift']
 
 
 class UserCreationObligatoryEmailForm(UserCreationForm):
@@ -8,7 +29,7 @@ class UserCreationObligatoryEmailForm(UserCreationForm):
     email = forms.EmailField(required=True)
 
     class Meta:
-        model = User
+        model = get_user_model()
         fields = ("username", "password1", "password2", "email")
 
     def save(self):

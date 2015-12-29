@@ -11,9 +11,33 @@
         data-width="450"
         data-show-faces="true">
     </div>
+    <form action={% url 'profile' %} method="post" class="form">
+        {% csrf_token %}
+        <h2>User settings</h2>
+        {% bootstrap_form user_form %}
     <div>
-        <a href="{% url 'password_change' %}" type="button" class="btn">
+        <a href="{% url 'password_change' %}" type="button" class="btn btn-default">
             Change your password
         </a>
     </div>
+
+        <h2>Player settings</h2>
+        {% if request.GET.activate_player_account or request.user.player %}
+           {% bootstrap_form player_form %}
+        {% else %}
+            <a href="{% url 'profile' %}?activate_player_account=1" type="button" class="btn btn-default">
+                Activate Player account
+            </a>
+        {% endif %}
+
+        <h2>Developer settings</h2>
+        {% if request.GET.activate_developer_account or request.user.developer %}
+           {% bootstrap_form developer_form %}
+        {% else %}
+            <a href="{% url 'profile' %}?activate_developer_account=1" type="button" class="btn btn-default">
+                Activate Developer account
+            </a>
+        {% endif %}
+        {% buttons submit="Submit" %}{% endbuttons %}
+    </form>
 {% endblock %}

@@ -14,8 +14,8 @@ admin.autodiscover()
 
 urlpatterns = patterns(
     '',
-    # By default go to login page for now
-    url(r'^$', RedirectView.as_view(pattern_name='login', permanent=False)),
+    # By default go to the profile page for now
+    url(r'^$', RedirectView.as_view(pattern_name='profile', permanent=False)),
 
     # yogsauth
     url('', include('social.apps.django_app.urls', namespace='social')),

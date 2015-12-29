@@ -11,16 +11,47 @@ from django.http import Http404
 
 
 from .forms import (UserCreationObligatoryEmailForm,
-                    EmailValidationAuthenticationForm)
+                    EmailValidationAuthenticationForm,
+                    UserForm, PlayerForm, DeveloperForm)
 from .models import EmailValidation
 from .utils import (send_activation_email_to_user,
                     get_activation_link_for_user_and_request)
 
 
 @login_required
+@csrf_protect
 def profile(request):
     """Profile page."""
-    return render(request, 'profile.djhtml')
+    user = request.user
+    user_form = UserForm(request.POST or None, instance=user)
+    if user_form.is_valid():
+        user_form.save()
+
+    player = None
+    if hasattr(user, 'player'):
+        player = user.player
+    player_form = PlayerForm(request.POST or None,
+                             instance=player)
+    if player_form.is_valid():
+        player = player_form.save(commit=False)
+        player.user = user
+        player.save()
+
+    developer = None
+    if hasattr(user, 'developer'):
+        developer = user.developer
+    developer_form = DeveloperForm(request.POST or None,
+                                   instance=developer)
+    if developer_form.is_valid():
+        developer = developer_form.save(commit=False)
+        developer.user = user
+        developer.save()
+
+    context = {'user_form': user_form,
+               'player_form': player_form,
+               'developer_form': developer_form}
+
+    return render(request, 'profile.djhtml', context=context)
 
 
 @sensitive_post_parameters()
