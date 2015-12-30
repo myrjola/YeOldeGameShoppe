@@ -40,3 +40,9 @@
   with_items:
     - jshint
     - csslint
+
+- name: install Firefox for the Selenium tests
+  yum: name=firefox state=latest
+
+- name: install Xvfb to have a headless Firefox
+  yum: name=xorg-x11-server-Xvfb state=latest
