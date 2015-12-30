@@ -39,3 +39,9 @@ $ heroku config:set FACEBOOK_API_SECRET=*your_facebook_api_secret*
 ```
 
 Remember to set the Site URL in the Facebook app settings to the URL of your Heroku deployment.
+
+## Running tests
+
+```sh
+$ heroku local:run python manage.py test
+```
