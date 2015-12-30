@@ -6,7 +6,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.core import mail
 
-from selenium.webdriver.chrome.webdriver import WebDriver
+from selenium.webdriver.firefox.webdriver import WebDriver
 
 from .models import (Player, Developer, EmailValidation)
 from .utils import generate_email_validation_token_for_user
