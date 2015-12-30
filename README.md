@@ -8,7 +8,7 @@ Make sure you have Python [installed properly](http://install.python-guide.org).
 
 ```sh
 $ pip install -r requirements.txt
-$ createdb python_getting_started
+$ createdb yeoldegameshoppe
 $ heroku local:run python manage.py migrate
 $ heroku local:run python manage.py collectstatic
 $ heroku local
