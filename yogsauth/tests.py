@@ -7,6 +7,7 @@ from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.core import mail
 
 from selenium.webdriver.firefox.webdriver import WebDriver
+from pyvirtualdisplay import Display
 
 from .models import (Player, Developer, EmailValidation)
 from .utils import generate_email_validation_token_for_user
@@ -88,11 +89,19 @@ class AuthenticationTestCase(StaticLiveServerTestCase):
     @classmethod
     def setUpClass(cls):
         super(AuthenticationTestCase, cls).setUpClass()
+
+        # start display
+        cls.vdisplay = Display(visible=0, size=(1024, 768))
+        cls.vdisplay.start()
+
+        # start browser
         cls.selenium = WebDriver()
+        cls.selenium.maximize_window()
 
     @classmethod
     def tearDownClass(cls):
         cls.selenium.quit()
+        cls.vdisplay.stop()
         super(AuthenticationTestCase, cls).tearDownClass()
 
     def test_end_to_end_auth(self):
