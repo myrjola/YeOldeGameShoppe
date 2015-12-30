@@ -3,6 +3,10 @@ from datetime import timedelta
 from django.utils import timezone
 from django.test import TestCase
 from django.contrib.auth import get_user_model
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from django.core import mail
+
+from selenium.webdriver.firefox.webdriver import WebDriver
 
 from .models import (Player, Developer, EmailValidation)
 from .utils import generate_email_validation_token_for_user
@@ -77,3 +81,48 @@ class EmailValidationTestCase(TestCase):
         correct_token = self.emailvalidation.activation_key
         with self.assertRaises(EmailValidation.KeyExpiredException):
             self.emailvalidation.activate_user_against_token(correct_token)
+
+
+class AuthenticationTestCase(StaticLiveServerTestCase):
+    """End to end authentication test."""
+    @classmethod
+    def setUpClass(cls):
+        super(AuthenticationTestCase, cls).setUpClass()
+        cls.selenium = WebDriver()
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.selenium.quit()
+        super(AuthenticationTestCase, cls).tearDownClass()
+
+    def test_end_to_end_auth(self):
+        """Registers a new user, activates the account and logs in."""
+
+        # Register new user
+        self.selenium.get('%s%s' % (self.live_server_url, '/register'))
+        username_input = self.selenium.find_element_by_name("username")
+        username_input.send_keys('testuser')
+        password_input = self.selenium.find_element_by_name("password1")
+        password_input.send_keys('secret')
+        password_input = self.selenium.find_element_by_name("password2")
+        password_input.send_keys('secret')
+        email_input = self.selenium.find_element_by_name("email")
+        email_input.send_keys('test@example.com')
+        self.selenium.find_element_by_xpath('//button[@type="submit"]').click()
+
+        # Check the inbox
+        self.assertEqual(len(mail.outbox), 1)
+        activation_mail = mail.outbox[0]
+        self.assertEqual(activation_mail.to, ['test@example.com'])
+        activation_link = activation_mail.body
+
+        # Activate user and login
+        self.selenium.get(activation_link)
+        username_input = self.selenium.find_element_by_name("username")
+        username_input.send_keys('testuser')
+        password_input = self.selenium.find_element_by_name("password")
+        password_input.send_keys('secret')
+        self.selenium.find_element_by_xpath('//button[@type="submit"]').click()
+
+        # We should have logged in and be inside the profile now.
+        self.assertIn('profile', self.selenium.current_url)
