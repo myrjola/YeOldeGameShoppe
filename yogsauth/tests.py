@@ -1,3 +1,4 @@
+import sys
 from datetime import timedelta
 
 from django.utils import timezone
@@ -90,9 +91,10 @@ class AuthenticationTestCase(StaticLiveServerTestCase):
     def setUpClass(cls):
         super(AuthenticationTestCase, cls).setUpClass()
 
-        # start display
-        cls.vdisplay = Display(visible=0, size=(1024, 768))
-        cls.vdisplay.start()
+        # start virtual display if on linux
+        if sys.platform == "linux" or sys.platform == "linux2":
+            cls.vdisplay = Display(visible=0, size=(1024, 768))
+            cls.vdisplay.start()
 
         # start browser
         cls.selenium = WebDriver()
@@ -101,7 +103,10 @@ class AuthenticationTestCase(StaticLiveServerTestCase):
     @classmethod
     def tearDownClass(cls):
         cls.selenium.quit()
-        cls.vdisplay.stop()
+
+        if sys.platform == "linux" or sys.platform == "linux2":
+            cls.vdisplay.stop()
+
         super(AuthenticationTestCase, cls).tearDownClass()
 
     def test_end_to_end_auth(self):
