@@ -38,13 +38,17 @@
     <input type="hidden" name="next" value="{{ next }}" />
     {% endif %}
     {% bootstrap_form form %}
-    {% buttons %}
-    <button type="submit" class="btn btn-primary">Login</button>
-    <a href="/login/facebook" type="button" class="btn btn-primary">Login with Facebook</a>
+    {% buttons submit="Login" %}
+    <div>
+        <a href="{% url 'password_reset' %}">Forgot your password?</a>
+    </div>
+    <a href="/login/facebook" type="button"
+       class="btn btn-primary">Login with Facebook
+    </a>
     {% endbuttons %}
 </form>
 
 <div>
-    <a href="{% url 'password_reset' %}">Forgot your password?</a>
+    <a href="{% url 'register' %}" type="button" class="btn btn-default">Sign up for free</a>
 </div>
 {% endblock %}
