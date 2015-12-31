@@ -51,6 +51,13 @@ def profile(request):
                'player_form': player_form,
                'developer_form': developer_form}
 
+    # Show the developer and player forms when asked for them
+    for querydict in [request.GET, request.POST]:
+        if 'activate_player_account' in querydict:
+            context['activate_player_account'] = True
+        if 'activate_developer_account' in querydict:
+            context['activate_developer_account'] = True
+
     return render(request, 'profile.djhtml', context=context)
 
 

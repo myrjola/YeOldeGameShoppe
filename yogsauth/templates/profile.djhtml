@@ -22,7 +22,8 @@
     </div>
 
         <h2>Player settings</h2>
-        {% if request.GET.activate_player_account or request.user.player %}
+        {% if activate_player_account or request.user.player %}
+            <input type="hidden" name="activate_player_account" value="1"/>
            {% bootstrap_form player_form %}
         {% else %}
             {% if request.GET.player_activation_needed %}
@@ -37,7 +38,8 @@
         {% endif %}
 
         <h2>Developer settings</h2>
-        {% if request.GET.activate_developer_account or request.user.developer %}
+        {% if activate_developer_account or request.user.developer %}
+            <input type="hidden" name="activate_developer_account" value="1"/>
            {% bootstrap_form developer_form %}
         {% else %}
             {% if request.GET.developer_activation_needed %}
