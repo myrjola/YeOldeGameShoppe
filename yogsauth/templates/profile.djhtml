@@ -25,6 +25,12 @@
         {% if request.GET.activate_player_account or request.user.player %}
            {% bootstrap_form player_form %}
         {% else %}
+            {% if request.GET.player_activation_needed %}
+                <div class="alert alert-danger">
+                    <strong>Player account required!</strong>
+                    You need to activate your player account.
+                </div>
+            {% endif %}
             <a href="{% url 'profile' %}?activate_player_account=1" type="button" class="btn btn-default">
                 Activate Player account
             </a>
@@ -34,6 +40,12 @@
         {% if request.GET.activate_developer_account or request.user.developer %}
            {% bootstrap_form developer_form %}
         {% else %}
+            {% if request.GET.developer_activation_needed %}
+                <div class="alert alert-danger">
+                    <strong>Developer account required!</strong>
+                    You need to activate your developer account.
+                </div>
+            {% endif %}
             <a href="{% url 'profile' %}?activate_developer_account=1" type="button" class="btn btn-default">
                 Activate Developer account
             </a>
