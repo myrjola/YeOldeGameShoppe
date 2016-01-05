@@ -23,6 +23,7 @@ class GameLicense(models.Model):
 
 
 class HighScore(models.Model):
+    """The high-scores are saved in this model."""
     game = models.ForeignKey('Game',
                              on_delete=models.CASCADE)
     player = models.ForeignKey('yogsauth.Player',
