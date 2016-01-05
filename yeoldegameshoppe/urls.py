@@ -9,6 +9,7 @@ from django.views.generic import RedirectView
 
 
 import yogsauth.views
+import yogsgame.views
 
 admin.autodiscover()
 
@@ -40,6 +41,8 @@ urlpatterns = patterns(
         name='send_activation_email'),
     url(r'^profile/$', yogsauth.views.profile, name='profile'),
     url(r'^register$', yogsauth.views.register, name='register'),
+    #developer_module
+    url(r'^addgame$', yogsgame.views.add_game, name='addgame'),
 
     # admin
     url(r'^admin/', include(admin.site.urls))
