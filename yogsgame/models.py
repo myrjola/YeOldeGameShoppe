@@ -10,6 +10,21 @@ class Game(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     url = models.URLField()
 
+    def get_gamelicense_for_user(self, user):
+        """Tells if a user owns a license for the Game.
+
+        Returns the GameLicense instance that shows that the user owns the
+        game, or None if the user doesn't own the game."""
+        return GameLicense.objects.filter(game=self, player__user=user).first()
+
+    def buy_with_user(self, user):
+        """Makes the user buy a license to play the game.
+
+        Returns the resulting GameLicense instance."""
+        license = GameLicense(game=self, player=user.player,
+                              purchase_price=self.price)
+        return license.save()
+
 
 class GameLicense(models.Model):
     """A model representing a bought license to play a game."""

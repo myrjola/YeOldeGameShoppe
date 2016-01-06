@@ -45,6 +45,9 @@ urlpatterns = patterns(
     # yogsgame
     url(r'^game/(?P<game_id>\d+)$', yogsgame.views.game,
         name='game'),
+    url(r'^game/(?P<game_id>\d+)/buy$', yogsgame.views.buy_game,
+        name='buy_game'),
+
     # admin
     url(r'^admin/', include(admin.site.urls))
 )
