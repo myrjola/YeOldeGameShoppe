@@ -1,0 +1,48 @@
+[
+{
+    "pk": 5,
+    "model": "auth.user",
+    "fields": {
+        "is_superuser": false,
+        "last_name": "",
+        "is_active": true,
+        "email": "developer@example.com",
+        "password": "pbkdf2_sha256$20000$HLeHIKaJYOHO$2kKw+reBOBSYmmz2JDK5ngEDmu1mAiUVrBuMCWZ5tPA=",
+        "last_login": "2016-01-06T13:33:27.347Z",
+        "date_joined": "2016-01-06T13:33:12.792Z",
+        "is_staff": false,
+        "first_name": "my password is developer",
+        "username": "developer",
+        "user_permissions": [],
+        "groups": []
+    }
+},
+{
+    "pk": 4,
+    "model": "yogsauth.developer",
+    "fields": {
+        "iban": "123456789",
+        "user": 5,
+        "swift": "12345678"
+    }
+},
+{
+    "pk": 5,
+    "model": "yogsauth.emailvalidation",
+    "fields": {
+        "key_expires": "2016-01-08T13:33:12.827Z",
+        "activation_key": "57e59efb9dd4ce779e104c060016d72617594230",
+        "user": 5
+    }
+},
+{
+    "pk": 1,
+    "model": "yogsgame.game",
+    "fields": {
+        "title": "Example game",
+        "price": 10.1,
+        "developer": 4,
+        "url": "/static/example_game.html"
+    }
+}
+]
