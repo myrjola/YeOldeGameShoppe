@@ -1,7 +1,5 @@
 {% extends "base.djhtml" %}
-{% load staticfiles %}
 {% load bootstrap3 %}
-
 
 {% block content %}
     <h1> Welcome {{ request.user.username }}!</h1>
