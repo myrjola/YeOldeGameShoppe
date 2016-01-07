@@ -56,7 +56,9 @@ class Developer(models.Model):
 class Player(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL,
                                 on_delete=models.CASCADE)
-    gamertag = models.fields.CharField(max_length=32, unique=True)
+    gamertag = models.fields.CharField(
+        max_length=32, unique=True, null=True, blank=True,
+        help_text="Optional name to show in high-scores.")
 
     def get_name_for_high_score(self):
         return self.gamertag or self.user.username
