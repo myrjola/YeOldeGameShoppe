@@ -18,6 +18,24 @@
     }
 },
 {
+    "model": "auth.user",
+    "fields": {
+        "is_staff": false,
+        "last_login": "2016-01-07T05:51:28.881Z",
+        "user_permissions": [],
+        "groups": [],
+        "last_name": "",
+        "is_active": true,
+        "password": "pbkdf2_sha256$20000$ojWRlxeNzx5c$OQPI69cF13p7M8SggvNtLJdHEcscfML/OHZTc7h9ul8=",
+        "date_joined": "2016-01-07T05:51:14.790Z",
+        "email": "player@example.com",
+        "first_name": "my password is player",
+        "is_superuser": false,
+        "username": "player"
+    },
+    "pk": 6
+},
+{
     "pk": 4,
     "model": "yogsauth.developer",
     "fields": {
@@ -27,6 +45,14 @@
     }
 },
 {
+    "model": "yogsauth.player",
+    "fields": {
+        "gamertag": "playertag",
+        "user": 6
+    },
+    "pk": 6
+},
+{
     "pk": 5,
     "model": "yogsauth.emailvalidation",
     "fields": {
@@ -34,6 +60,15 @@
         "activation_key": "57e59efb9dd4ce779e104c060016d72617594230",
         "user": 5
     }
+},
+{
+    "model": "yogsauth.emailvalidation",
+    "fields": {
+        "key_expires": "2016-01-09T05:51:14.818Z",
+        "activation_key": "07f5755db1f8dcc42b222989c7d234f2fc312d56",
+        "user": 6
+    },
+    "pk": 6
 },
 {
     "pk": 1,

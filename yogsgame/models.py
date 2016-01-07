@@ -1,8 +1,14 @@
 from django.db import models
 
 
+class NotAPlayerException(Exception):
+    """Raised when a user account haven't activated the player status."""
+    pass
+
+
 class Game(models.Model):
     """A model for the computer games in the service."""
+
     developer = models.ForeignKey('yogsauth.Developer',
                                   on_delete=models.CASCADE)
 
@@ -21,6 +27,9 @@ class Game(models.Model):
         """Makes the user buy a license to play the game.
 
         Returns the resulting GameLicense instance."""
+        if not hasattr(user, "player"):
+            raise NotAPlayerException()
+
         license = GameLicense(game=self, player=user.player,
                               purchase_price=self.price)
         return license.save()
