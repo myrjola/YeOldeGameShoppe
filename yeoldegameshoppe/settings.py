@@ -32,7 +32,7 @@ TEMPLATE_DEBUG = True
 
 # Application definition
 
-PROJECT_APPS = ('yeoldegameshoppe', 'yogsbase', 'yogsauth', 'yogsgame')
+PROJECT_APPS = ('yeoldegameshoppe', 'yogsbase', 'yogsauth', 'yogsgame','yogspayment')
 
 INSTALLED_APPS = (
     'django.contrib.admin',

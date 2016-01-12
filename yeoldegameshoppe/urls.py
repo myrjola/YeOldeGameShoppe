@@ -10,6 +10,7 @@ from django.views.generic import RedirectView
 
 import yogsauth.views
 import yogsgame.views
+import yogspayment.views
 
 admin.autodiscover()
 
@@ -50,6 +51,10 @@ urlpatterns = patterns(
     url(r'^owned_games$', yogsgame.views.owned_games, name='profile'),
     url(r'^all_games$', yogsgame.views.all_games, name='profile'),
 
+    #yogspayment
+    url(r'^shop/success$', yogspayment.views.success, name='success'),
+    url(r'^shop/cancel$', yogspayment.views.cancel, name='cancel'),
+    url(r'^shop/error$', yogspayment.views.error, name='error'),
     # admin
     url(r'^admin/', include(admin.site.urls))
 )

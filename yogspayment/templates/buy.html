@@ -1,0 +1,17 @@
+{% load staticfiles%}
+<div class="modal-footer">
+    <form id="buyForm" action="http://payments.webcourse.niksula.hut.fi/pay/" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="pid" value={{pid}} />
+        <input type="hidden" name="sid" value={{sid}} />
+        <input type="hidden" name="success_url" value={{success_url}} />
+        <input type="hidden" name="cancel_url" value={{cancel_url}} />
+        <input type="hidden" name="error_url" value={{error_url}} />
+        <input type="hidden" name="checksum" value={{checksum}} />
+        <input type="hidden" name="amount" value={{amount}} />
+        <input type="hidden" name="checksumstr" value={{checksumstr}} />
+        <input type="submit" value="Buy">
+    </form>
+    <!-- <button id="buyButton" type="button">Buy</button>
+    <button type="button" class="btn btn-primary btn-lg" data-dismiss="modal">Close</button> -->
+</div>
