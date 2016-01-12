@@ -17,6 +17,22 @@ class PlayerForm(ModelForm):
         model = Player
         fields = ['gamertag']
 
+    def is_valid(self):
+        """Check gamertag uniqueness
+
+        Need to check uniqueness in the form as there is problems with empty
+        gamertags. See http://stackoverflow.com/a/17257129.
+        """
+        gamertag = self.data.get('gamertag')
+
+        if not self.instance.is_gamertag_unique(gamertag):
+            self.errors['gamertag'] = [
+                'The gamertag %s is in use, please choose another one.' %
+                gamertag
+            ]
+
+        return super(ModelForm, self).is_valid()
+
 
 class DeveloperForm(ModelForm):
     # The SWIFT-BIC code is between 8 and 11 characters

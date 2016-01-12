@@ -1,6 +1,7 @@
 from django.utils import timezone
 from django.db import models
 from django.conf import settings
+from django.db import IntegrityError
 
 
 class EmailValidation(models.Model):
@@ -57,8 +58,30 @@ class Player(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL,
                                 on_delete=models.CASCADE)
     gamertag = models.fields.CharField(
-        max_length=32, unique=True, null=True, blank=True,
+        max_length=32, unique=False, null=True, blank=True,
         help_text="Optional name to show in high-scores.")
 
     def get_name_for_high_score(self):
         return self.gamertag or self.user.username
+
+    def is_gamertag_unique(self, gamertag):
+        """Returns True if gamertag is not used by other players.
+
+        Also returns True if the gamertag is empty."""
+        if not gamertag:
+            return True
+
+        other_players = Player.objects.exclude(pk=self.pk)
+        same_gamertag = other_players.filter(gamertag=gamertag)
+        return not same_gamertag.exists()
+
+    def save(self, *args, **kwargs):
+        """Check for uniqueness of the gamertag before saving.
+
+        This couldn't be handled with uniqe=True because it didn't support
+        multiple empty gamertags.
+        """
+        if self.is_gamertag_unique(self.gamertag):
+            return super(Player, self).save(*args, **kwargs)
+
+        raise IntegrityError("gamertag %s is not unique" % self.gamertag)

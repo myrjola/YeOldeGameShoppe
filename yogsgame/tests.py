@@ -58,7 +58,7 @@ class BasicPlayerFunctionalityTestCase(YogsSeleniumTest):
         self.assertTrue(game_iframe)
         self.selenium.switch_to.frame(game_iframe)
 
-        # An easy test to see if clicking buttons works
+        # A simple test to see if clicking buttons works
         score = self.selenium.find_element_by_css_selector('#score')
         self.assertEqual("0", score.text)
         self.selenium.find_element_by_css_selector('#add_points').click()
