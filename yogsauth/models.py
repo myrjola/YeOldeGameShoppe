@@ -1,6 +1,7 @@
 from django.utils import timezone
 from django.db import models
 from django.conf import settings
+from django.db import IntegrityError
 
 
 class EmailValidation(models.Model):
@@ -73,3 +74,14 @@ class Player(models.Model):
         other_players = Player.objects.exclude(pk=self.pk)
         same_gamertag = other_players.filter(gamertag=gamertag)
         return not same_gamertag.exists()
+
+    def save(self, *args, **kwargs):
+        """Check for uniqueness of the gamertag before saving.
+
+        This couldn't be handled with uniqe=True because it didn't support
+        multiple empty gamertags.
+        """
+        if self.is_gamertag_unique(self.gamertag):
+            return super(Player, self).save(*args, **kwargs)
+
+        raise IntegrityError("gamertag %s is not unique" % self.gamertag)

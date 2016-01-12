@@ -4,6 +4,7 @@ from django.utils import timezone
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from django.core import mail
+from django.db import IntegrityError
 
 from yeoldegameshoppe.tests import YogsSeleniumTest
 
@@ -27,6 +28,21 @@ class PlayerTestCase(TestCase):
 
         without_gamertag = get_user_model().objects.get(username="user").player
         self.assertEqual(without_gamertag.get_name_for_high_score(), "user")
+
+    def test_gamertag_unique_constraint(self):
+        """The gamertag field should be unique."""
+        self.assertTrue(Player.objects.get(gamertag="awesomegamer"))
+        without_gamertag = Player.objects.get(gamertag=None)
+        without_gamertag.gamertag = "awesomegamer"
+        with self.assertRaises(IntegrityError):
+            without_gamertag.save()
+
+    def test_gamertag_multiple_empty_allowed(self):
+        """It should be allowed to have many players with an empty gamertag."""
+        with_gamertag = Player.objects.get(gamertag="awesomegamer")
+        self.assertTrue(Player.objects.get(gamertag=None))
+        with_gamertag.gamertag = None
+        with_gamertag.save()
 
     def test_cascading_delete(self):
         """Deleting the User should get rid of the Player"""
