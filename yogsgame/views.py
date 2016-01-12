@@ -30,9 +30,6 @@ def game(request, game_id):
         'sid' : sid,
         'amount' : amount,
         'checksum' : m,
-        'success_url' : success_url,
-        'cancel_url' : cancel_url,
-        'error_url' : error_url,
         'game' : game,
         'checksumstr' : checksumstr
     }

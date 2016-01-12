@@ -13,11 +13,12 @@
     {% else %}
     <div class="modal-footer">
     <form id="buyForm" action="http://payments.webcourse.niksula.hut.fi/pay/" method="POST">
+        {% csrf_token %}
         <input type="hidden" name="pid" value={{pid}} />
         <input type="hidden" name="sid" value={{sid}} />
-        <input type="hidden" name="success_url" value={% url 'success' %} />
-        <input type="hidden" name="cancel_url" value={% url 'cancel' %} />
-        <input type="hidden" name="error_url" value={% url 'error' %} />
+        <input type="hidden" name="success_url" value="http://localhost:8000{% url 'success' %}" />
+        <input type="hidden" name="cancel_url" value="http://localhost:8000{% url 'cancel' %}" />
+        <input type="hidden" name="error_url" value="http://localhost:8000{% url 'error' %}" />
         <input type="hidden" name="checksum" value={{checksum}} />
         <input type="hidden" name="amount" value={{amount}} />
         <input type="submit" value="Buy">
