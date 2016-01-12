@@ -1,0 +1,29 @@
+{% extends "base.djhtml" %}
+{% load bootstrap3 %}
+
+{% block content %}
+
+    <h1>{{ game.title }}</h1>
+
+    {% if user_owns_game %}
+    <iframe name="game_iframe" src="{{ game.url }}" width="300" height="300">
+        <p>Your browser does not support iframes.</p>
+    </iframe>
+
+    {% else %}
+    <div class="modal-footer">
+    <form id="buyForm" action="http://payments.webcourse.niksula.hut.fi/pay/" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="pid" value={{pid}} />
+        <input type="hidden" name="sid" value={{sid}} />
+        <input type="hidden" name="success_url" value="http://localhost:8000{% url 'success' %}" />
+        <input type="hidden" name="cancel_url" value="http://localhost:8000{% url 'cancel' %}" />
+        <input type="hidden" name="error_url" value="http://localhost:8000{% url 'error' %}" />
+        <input type="hidden" name="checksum" value={{checksum}} />
+        <input type="hidden" name="amount" value={{amount}} />
+        <input type="submit" value="Buy">
+    </form>
+    </div>
+    {% endif %}
+
+{% endblock %}

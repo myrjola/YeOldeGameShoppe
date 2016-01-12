@@ -1,5 +1,4 @@
 {% extends "base.djhtml" %}
-{% load staticfiles %}
 {% load bootstrap3 %}
 
 {% block content %}

@@ -1,14 +1,12 @@
-import sys
 from datetime import timedelta
 
 from django.utils import timezone
 from django.test import TestCase
 from django.contrib.auth import get_user_model
-from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.core import mail
+from django.db import IntegrityError
 
-from selenium.webdriver.firefox.webdriver import WebDriver
-from pyvirtualdisplay import Display
+from yeoldegameshoppe.tests import YogsSeleniumTest
 
 from .models import (Player, Developer, EmailValidation)
 from .utils import generate_email_validation_token_for_user
@@ -30,6 +28,21 @@ class PlayerTestCase(TestCase):
 
         without_gamertag = get_user_model().objects.get(username="user").player
         self.assertEqual(without_gamertag.get_name_for_high_score(), "user")
+
+    def test_gamertag_unique_constraint(self):
+        """The gamertag field should be unique."""
+        self.assertTrue(Player.objects.get(gamertag="awesomegamer"))
+        without_gamertag = Player.objects.get(gamertag=None)
+        without_gamertag.gamertag = "awesomegamer"
+        with self.assertRaises(IntegrityError):
+            without_gamertag.save()
+
+    def test_gamertag_multiple_empty_allowed(self):
+        """It should be allowed to have many players with an empty gamertag."""
+        with_gamertag = Player.objects.get(gamertag="awesomegamer")
+        self.assertTrue(Player.objects.get(gamertag=None))
+        with_gamertag.gamertag = None
+        with_gamertag.save()
 
     def test_cascading_delete(self):
         """Deleting the User should get rid of the Player"""
@@ -85,29 +98,8 @@ class EmailValidationTestCase(TestCase):
             self.emailvalidation.activate_user_against_token(correct_token)
 
 
-class AuthenticationTestCase(StaticLiveServerTestCase):
+class AuthenticationTestCase(YogsSeleniumTest):
     """End to end authentication test."""
-    @classmethod
-    def setUpClass(cls):
-        super(AuthenticationTestCase, cls).setUpClass()
-
-        # start virtual display if on linux
-        if sys.platform == "linux" or sys.platform == "linux2":
-            cls.vdisplay = Display(visible=0, size=(1024, 768))
-            cls.vdisplay.start()
-
-        # start browser
-        cls.selenium = WebDriver()
-        cls.selenium.maximize_window()
-
-    @classmethod
-    def tearDownClass(cls):
-        cls.selenium.quit()
-
-        if sys.platform == "linux" or sys.platform == "linux2":
-            cls.vdisplay.stop()
-
-        super(AuthenticationTestCase, cls).tearDownClass()
 
     def test_end_to_end_auth(self):
         """Registers a new user, activates the account and logs in."""

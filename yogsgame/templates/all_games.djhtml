@@ -1,0 +1,12 @@
+{% extends "base.djhtml" %}
+{% load bootstrap3 %}
+
+{% block content %}
+    <ul>
+        {% for game in games %}
+            <li><a href="{% url 'game' game_id=game.pk %}">{{ game.title }}</a></li>
+        {% empty %}
+            <li>No available games. We need more developers!</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

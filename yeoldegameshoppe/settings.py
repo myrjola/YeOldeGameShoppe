@@ -32,7 +32,7 @@ TEMPLATE_DEBUG = True
 
 # Application definition
 
-PROJECT_APPS = ('yeoldegameshoppe', 'yogsbase', 'yogsauth', 'yogsgame')
+PROJECT_APPS = ('yeoldegameshoppe', 'yogsbase', 'yogsauth', 'yogsgame','yogspayment')
 
 INSTALLED_APPS = (
     'django.contrib.admin',
@@ -99,8 +99,10 @@ USE_TZ = True
 # Parse database configuration from $DATABASE_URL
 DATABASES['default'] = dj_database_url.config()
 
-# Enable Connection Pooling (if desired)
-DATABASES['default']['ENGINE'] = 'django_postgrespool'
+# Enable Connection Pooling in Heroku. Note that the database errors will be
+# less helpful https://github.com/kennethreitz/django-postgrespool/issues/24
+if "DYNO" in os.environ:
+    DATABASES['default']['ENGINE'] = 'django_postgrespool'
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -136,6 +138,10 @@ JENKINS_TASKS = (
 SOCIAL_AUTH_FACEBOOK_KEY = os.environ['FACEBOOK_APP_ID']
 SOCIAL_AUTH_FACEBOOK_SECRET = os.environ['FACEBOOK_API_SECRET']
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+
+# yogspayment related settings
+PAYMENT_SELLER_ID = os.environ['PAYMENT_SELLER_ID']
+PAYMENT_SECRET_KEY = os.environ['PAYMENT_SECRET_KEY']
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
