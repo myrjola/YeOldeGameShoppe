@@ -1,0 +1,12 @@
+{% extends "base.djhtml" %}
+{% load bootstrap3 %}
+
+{% block content %}
+    <ul>
+        {% for game in games %}
+            <li>{{ game.title }}</li>
+        {% empty %}
+            <li>You don't own any games.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

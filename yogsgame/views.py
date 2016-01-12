@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect
 
 from yogsauth.decorators import player_required
 
-from .models import Game
+from .models import Game, GameLicense
 
 
 @player_required
@@ -33,3 +33,22 @@ def buy_game(request, game_id):
     game.buy_with_user(user)
 
     return HttpResponseRedirect(reverse("game", kwargs={"game_id": game_id}))
+
+
+@player_required
+def owned_games(request):
+    """A view that shows all the owned games of a player."""
+    player = request.user.player
+
+    licenses = GameLicense.objects.filter(player=player)
+    games = [license.game for license in licenses]
+
+    context = {'games': games}
+
+    return render(request, 'owned_games.djhtml', context=context)
+
+
+def all_games(request):
+    """A view that shows all games."""
+    # TODO implement view for all games and some nice browsing UI etc.
+    return render(request, 'owned_games.djhtml')
