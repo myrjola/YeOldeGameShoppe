@@ -50,5 +50,5 @@ def owned_games(request):
 
 def all_games(request):
     """A view that shows all games."""
-    # TODO implement view for all games and some nice browsing UI etc.
-    return render(request, 'owned_games.djhtml')
+    context = {"games": Game.objects.all()}
+    return render(request, 'all_games.djhtml', context=context)

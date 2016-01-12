@@ -6,7 +6,7 @@
         {% for game in games %}
             <li><a href="{% url 'game' game_id=game.pk %}">{{ game.title }}</a></li>
         {% empty %}
-            <li>You don't own any games.</li>
+            <li>No available games. We need more developers!</li>
         {% endfor %}
     </ul>
 {% endblock %}
