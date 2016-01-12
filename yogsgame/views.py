@@ -6,6 +6,7 @@ from django.shortcuts import (render, get_object_or_404)
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 
+from yeoldegameshoppe.utils import get_host_url
 from yogsauth.decorators import player_required
 
 from .models import Game, GameLicense
@@ -34,7 +35,8 @@ def game(request, game_id):
         'amount': amount,
         'checksum': checksum,
         'game': game,
-        'user_owns_game': game.get_gamelicense_for_user(user)
+        'user_owns_game': game.get_gamelicense_for_user(user),
+        'host_url': get_host_url(request)
     }
 
     return render(request, 'game.djhtml', context=context)
