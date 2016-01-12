@@ -14,6 +14,9 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='player',
             name='gamertag',
-            field=models.CharField(blank=True, null=True, unique=True, help_text='Optional name to show in highscores', max_length=32),
+            field=models.CharField(
+                blank=True, null=True, unique=True,
+                help_text='Optional name to show in highscores',
+                max_length=32),
         ),
     ]

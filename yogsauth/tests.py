@@ -1,13 +1,9 @@
-import sys
 from datetime import timedelta
 
 from django.utils import timezone
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from django.core import mail
-
-from selenium.webdriver.firefox.webdriver import WebDriver
-from pyvirtualdisplay import Display
 
 from yeoldegameshoppe.tests import YogsSeleniumTest
 
