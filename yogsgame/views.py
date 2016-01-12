@@ -22,16 +22,19 @@ def game(request, game_id):
     amount = game.price
     sid = settings.PAYMENT_SELLER_ID
     secret_key = settings.PAYMENT_SECRET_KEY
-    checksumstr = "pid={}&sid={}&amount={}&token={}".format(pid, sid, amount, secret_key)
-    m = md5(checksumstr.encode('ascii')).hexdigest()
+    checksumstr = "pid={}&sid={}&amount={}&token={}".format(pid,
+                                                            sid,
+                                                            amount,
+                                                            secret_key)
+    checksum = md5(checksumstr.encode('ascii')).hexdigest()
 
     context = {
-        'pid' : pid,
-        'sid' : sid,
-        'amount' : amount,
-        'checksum' : m,
-        'game' : game,
-        'checksumstr' : checksumstr
+        'pid': pid,
+        'sid': sid,
+        'amount': amount,
+        'checksum': checksum,
+        'game': game,
+        'user_owns_game': game.get_gamelicense_for_user(user)
     }
 
     return render(request, 'game.djhtml', context=context)
