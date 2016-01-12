@@ -51,10 +51,11 @@ urlpatterns = patterns(
     url(r'^owned_games$', yogsgame.views.owned_games, name='owned_games'),
     url(r'^all_games$', yogsgame.views.all_games, name='all_games'),
 
-    #yogspayment
+    # yogspayment
     url(r'^shop/success$', yogspayment.views.success, name='success'),
     url(r'^shop/cancel$', yogspayment.views.cancel, name='cancel'),
     url(r'^shop/error$', yogspayment.views.error, name='error'),
+
     # admin
     url(r'^admin/', include(admin.site.urls))
 )

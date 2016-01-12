@@ -139,6 +139,10 @@ SOCIAL_AUTH_FACEBOOK_KEY = os.environ['FACEBOOK_APP_ID']
 SOCIAL_AUTH_FACEBOOK_SECRET = os.environ['FACEBOOK_API_SECRET']
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 
+# yogspayment related settings
+PAYMENT_SELLER_ID = os.environ['PAYMENT_SELLER_ID']
+PAYMENT_SECRET_KEY = os.environ['PAYMENT_SECRET_KEY']
+
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'social.backends.facebook.FacebookOAuth2'

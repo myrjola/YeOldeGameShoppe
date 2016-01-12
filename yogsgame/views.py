@@ -1,5 +1,10 @@
+import time
+from hashlib import md5
+
+from django.conf import settings
 from django.shortcuts import (render, get_object_or_404)
 from django.core.urlresolvers import reverse
+from django.views.decorators.csrf import csrf_protect
 from django.http import HttpResponseRedirect
 
 from yogsauth.decorators import player_required
@@ -8,10 +13,34 @@ from .models import Game, GameLicense
 
 
 @player_required
+@csrf_protect
 def game(request, game_id):
     """The main view for the Game model.
 
     A player can buy the game and play it from this view."""
+    user = request.user
+    game = get_object_or_404(Game, id=game_id)
+    pid = user.username + "_" + str(game.id) + "_" + str(time.time())
+    amount = game.price
+    sid = settings.PAYMENT_SELLER_ID
+    secret_key = settings.PAYMENT_SECRET_KEY
+    success_url = "http://localhost:8000/shop/success/"
+    cancel_url = "http://localhost:8000/shop/cancel/"
+    error_url = "http://localhost:8000/shop/error/"
+    checksumstr = "pid={}&sid={}&amount={}&token={}".format(pid, sid, amount, secret_key)
+    m = md5(checksumstr.encode('ascii')).hexdigest()
+
+    context = {
+        'pid' : pid,
+        'sid' : sid,
+        'amount' : amount,
+        'checksum' : m,
+        'success_url' : success_url,
+        'cancel_url' : cancel_url,
+        'error_url' : error_url,
+        'game' : game,
+        'checksumstr' : checksumstr
+    }
     game = get_object_or_404(Game, pk=game_id)
     user = request.user
 
