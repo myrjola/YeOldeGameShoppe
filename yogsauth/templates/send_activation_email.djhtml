@@ -1,0 +1,1 @@
+{% include "login.djhtml" with greeting="To send authentication email again you need to log in." form_action="send_activation_email" %}

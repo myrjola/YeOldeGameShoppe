@@ -1,0 +1,57 @@
+{% extends "base.djhtml" %}
+{% load staticfiles %}
+{% load bootstrap3 %}
+
+
+{% block content %}
+    <h1> Welcome {{ request.user.username }}!</h1>
+    <div
+        class="fb-like"
+        data-share="true"
+        data-width="450"
+        data-show-faces="true">
+    </div>
+    <form action={% url 'profile' %} method="post" class="form">
+        {% csrf_token %}
+        <h2>User settings</h2>
+        {% bootstrap_form user_form %}
+    <div>
+        <a href="{% url 'password_change' %}" type="button" class="btn btn-default">
+            Change your password
+        </a>
+    </div>
+
+        <h2>Player settings</h2>
+        {% if activate_player_account or request.user.player %}
+            <input type="hidden" name="activate_player_account" value="1"/>
+           {% bootstrap_form player_form %}
+        {% else %}
+            {% if request.GET.player_activation_needed %}
+                <div class="alert alert-danger">
+                    <strong>Player account required!</strong>
+                    You need to activate your player account.
+                </div>
+            {% endif %}
+            <a href="{% url 'profile' %}?activate_player_account=1" type="button" class="btn btn-default">
+                Activate Player account
+            </a>
+        {% endif %}
+
+        <h2>Developer settings</h2>
+        {% if activate_developer_account or request.user.developer %}
+            <input type="hidden" name="activate_developer_account" value="1"/>
+           {% bootstrap_form developer_form %}
+        {% else %}
+            {% if request.GET.developer_activation_needed %}
+                <div class="alert alert-danger">
+                    <strong>Developer account required!</strong>
+                    You need to activate your developer account.
+                </div>
+            {% endif %}
+            <a href="{% url 'profile' %}?activate_developer_account=1" type="button" class="btn btn-default">
+                Activate Developer account
+            </a>
+        {% endif %}
+        {% buttons submit="Submit" %}{% endbuttons %}
+    </form>
+{% endblock %}

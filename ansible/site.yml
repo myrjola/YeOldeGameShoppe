@@ -1,0 +1,19 @@
+- hosts: yogsjenkins
+  sudo: yes
+  vars:
+    firewall_allowed_tcp_ports:
+      - "22"
+      - "8081"
+    jenkins_plugins:
+      - git
+      - ssh
+      - gitlab-hook
+      - cobertura
+      - violations
+      - sloccount
+      - environment-script
+  roles:
+    - yogs.jenkins
+    - geerlingguy.jenkins
+    - geerlingguy.firewall
+    - kamaln7.swapfile

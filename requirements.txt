@@ -1,0 +1,16 @@
+dj-database-url==0.3.0
+Django==1.8.1
+django-postgrespool==0.3.0
+gunicorn==19.3.0
+psycopg2==2.6.1
+SQLAlchemy==1.0.4
+whitenoise==1.0.6
+requests==2.3.0
+django-jenkins==0.18.1
+coverage==4.0.3
+pep8==1.6.2
+pyflakes==1.0.0
+python-social-auth==0.2.13
+django-bootstrap3==6.2.2
+selenium==2.48.0
+pyvirtualdisplay==0.1.5

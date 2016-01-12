@@ -1,0 +1,5 @@
+---
+# vars file for yogs.jenkins
+dbname: yeoldegameshoppe
+testdbname: test_yeoldegameshoppe
+pip_installer_path: /tmp/get-pip.py

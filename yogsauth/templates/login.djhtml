@@ -1,0 +1,54 @@
+{% extends "base.djhtml" %}
+{% load staticfiles %}
+{% load bootstrap3 %}
+
+{% block content %}
+
+<p>{{ greeting|default:"Welcome! Please log in." }}</p>
+
+{% if request.GET.validation_email_sent_to %}
+    <div class="alert alert-info">
+        <strong>Check your inbox.</strong>
+        A validation email has been sent to {{ request.GET.validation_email_sent_to }}.
+        If you can't find it even in the spam folder you can send another
+        one from <a href="{% url 'send_activation_email' %}">here</a>.
+        {% if request.GET.debug_activation_email_contents %}
+            Email content: {{ request.GET.debug_activation_email_contents }}
+        {% endif %}
+    </div>
+{% endif %}
+
+{% if request.GET.activation_token_expired %}
+    <div class="alert alert-danger">
+        <strong>Token expired!</strong>
+        You need to request another validation email.
+    </div>
+{% endif %}
+
+{% if request.GET.user_already_activated %}
+    <div class="alert alert-danger">
+        <strong>User is already activated!</strong>
+        You don't need to validate your email anymore.
+    </div>
+{% endif %}
+
+<form action={% url form_action|default:"login" %} method="post" class="form">
+    {% csrf_token %}
+    {% if next %}
+    <input type="hidden" name="next" value="{{ next }}" />
+    {% endif %}
+    {% bootstrap_form form %}
+    {% buttons submit="Login" %}
+    <div>
+        <a href="{% url 'password_reset' %}">Forgot your password?</a>
+    </div>
+    <a href="/login/facebook" type="button"
+       class="btn btn-primary">Login with Facebook
+    </a>
+    {% endbuttons %}
+</form>
+
+<div>
+    <a href="{% url 'register' %}" type="button" class="btn btn-default">Sign up for free</a>
+</div>
+{% endblock %}
