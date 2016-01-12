@@ -57,8 +57,19 @@ class Player(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL,
                                 on_delete=models.CASCADE)
     gamertag = models.fields.CharField(
-        max_length=32, unique=True, null=True, blank=True,
+        max_length=32, unique=False, null=True, blank=True,
         help_text="Optional name to show in high-scores.")
 
     def get_name_for_high_score(self):
         return self.gamertag or self.user.username
+
+    def is_gamertag_unique(self, gamertag):
+        """Returns True if gamertag is not used by other players.
+
+        Also returns True if the gamertag is empty."""
+        if not gamertag:
+            return True
+
+        other_players = Player.objects.exclude(pk=self.pk)
+        same_gamertag = other_players.filter(gamertag=gamertag)
+        return not same_gamertag.exists()
