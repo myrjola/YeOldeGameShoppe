@@ -99,7 +99,6 @@ USE_TZ = True
 
 # Parse database configuration from $DATABASE_URL
 DATABASES['default'] = dj_database_url.config()
-
 # Enable Connection Pooling in Heroku. Note that the database errors will be
 # less helpful https://github.com/kennethreitz/django-postgrespool/issues/24
 if "DYNO" in os.environ:

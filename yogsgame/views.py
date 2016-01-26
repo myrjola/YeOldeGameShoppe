@@ -6,10 +6,12 @@ from django.shortcuts import (render, get_object_or_404)
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 
+
 from yeoldegameshoppe.utils import get_host_url
 from yogsauth.decorators import player_required
 
 from .models import Game, GameLicense
+from .forms import GameForm
 
 
 @player_required
@@ -71,3 +73,14 @@ def all_games(request):
     """A view that shows all games."""
     context = {"games": Game.objects.all()}
     return render(request, 'all_games.djhtml', context=context)
+
+def add_game(request):
+    form=GameForm(request.POST or None)
+    context={
+        "form": form
+    }
+    if form.is_valid():
+        game = form.save(commit=False)
+        game.developer=request.user.developer
+        game.save()
+    return render(request,"addgame.djhtml",context)
