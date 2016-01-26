@@ -4,7 +4,7 @@ from selenium.common.exceptions import NoSuchElementException
 
 from yeoldegameshoppe.tests import YogsSeleniumTest
 
-from .models import Game, NotAPlayerException
+from .models import Game, NotAPlayerException, HighScore
 
 
 class GameTestCase(TestCase):
@@ -63,3 +63,32 @@ class BasicPlayerFunctionalityTestCase(YogsSeleniumTest):
         self.assertEqual("0", score.text)
         self.selenium.find_element_by_css_selector('#add_points').click()
         self.assertEqual("10", score.text)
+
+    def test_submitting_scores(self):
+        """Tests submitting high scores."""
+        self.login_user("wealthyplayer", "player")
+
+        # Switch to game
+        game = Game.objects.all().first()
+        self.selenium.get('%s/game/%d' % (self.live_server_url, game.pk))
+        game_iframe = self.selenium.find_element_by_name("game_iframe")
+        self.assertTrue(game_iframe)
+        self.selenium.switch_to.frame(game_iframe)
+
+        # Submit two high scores
+        score = self.selenium.find_element_by_css_selector('#score')
+        self.assertEqual("0", score.text)
+        self.selenium.find_element_by_css_selector('#submit_score').click()
+
+        highscore1 = HighScore.objects.all().last()
+        self.assertEqual(game, highscore1.game)
+        self.assertEqual(0, highscore1.score)
+        self.assertEqual("wealthyplayer", highscore1.player.user.username)
+
+        self.selenium.find_element_by_css_selector('#add_points').click()
+        self.selenium.find_element_by_css_selector('#submit_score').click()
+
+        highscore2 = HighScore.objects.all().last()
+        self.assertEqual(game, highscore2.game)
+        self.assertEqual(10, highscore2.score)
+        self.assertEqual("wealthyplayer", highscore2.player.user.username)
