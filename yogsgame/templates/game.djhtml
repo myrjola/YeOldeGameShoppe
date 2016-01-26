@@ -5,6 +5,17 @@
 
     <h1>{{ game.title }}</h1>
 
+    {% if request.GET.payment_cancel %}
+        <div class="alert alert-danger">
+            <strong>Payment was cancelled.</strong>
+        </div>
+    {% endif %}
+    {% if request.GET.payment_error %}
+        <div class="alert alert-danger">
+            <strong>An error occurred while processing the payment.</strong>
+        </div>
+    {% endif %}
+
     {% if user_owns_game %}
     <iframe name="game_iframe" src="{{ game.url }}" width="300" height="300">
         <p>Your browser does not support iframes.</p>
