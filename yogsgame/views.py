@@ -8,7 +8,7 @@ from django.http import HttpResponseRedirect
 
 from yogsauth.decorators import player_required
 
-from .models import Game, GameLicense
+from yogsgame.models import Game, GameLicense
 
 
 @player_required
@@ -18,18 +18,22 @@ def game(request, game_id):
     A player can buy the game and play it from this view."""
     user = request.user
     game = get_object_or_404(Game, id=game_id)
-    pid = user.username + str(game.id) + str(int(time.time()))
+    #if the user had already got the game_id
+    if game.get_gamelicense_for_user(user):
+        return render(request, 'game.djhtml', context=None)
+
+    pid = str(game.id) + "a" + str(int(time.time())) + "a" +user.username
     amount = game.price
     sid = settings.PAYMENT_SELLER_ID
     secret_key = settings.PAYMENT_SECRET_KEY
     checksumstr = "pid={}&sid={}&amount={}&token={}".format(pid, sid, amount, secret_key)
-    m = md5(checksumstr.encode('ascii')).hexdigest()
+    checksum = md5(checksumstr.encode('ascii')).hexdigest()
 
     context = {
         'pid' : pid,
         'sid' : sid,
         'amount' : amount,
-        'checksum' : m,
+        'checksum' : checksum,
         'game' : game,
         'checksumstr' : checksumstr
     }
