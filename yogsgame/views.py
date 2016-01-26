@@ -6,4 +6,8 @@ def add_game(request):
     context={
         "form": form
     }
+    if form.is_valid():
+        game = form.save(commit=False)
+        game.developer=request.user.developer
+        game.save()
     return render(request,"addgame.djhtml",context)
