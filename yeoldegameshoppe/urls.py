@@ -42,6 +42,8 @@ urlpatterns = patterns(
         name='send_activation_email'),
     url(r'^profile/$', yogsauth.views.profile, name='profile'),
     url(r'^register$', yogsauth.views.register, name='register'),
+    #developer_module
+    url(r'^addgame$', yogsgame.views.add_game, name='addgame'),
 
     # yogsgame
     url(r'^game/(?P<game_id>\d+)$', yogsgame.views.game,

@@ -7,6 +7,8 @@ from django.core.urlresolvers import reverse
 
 from django.utils import timezone
 
+from yeoldegameshoppe.utils import get_host_url
+
 from .models import EmailValidation
 
 
@@ -49,10 +51,9 @@ def send_activation_email_to_user(user, request):
 def get_activation_link_for_user_and_request(user, request):
     """Returns the link that activates the user."""
     activation_key = user.emailvalidation.activation_key
-    return "%s://%s%s" % ('https' if request.is_secure() else 'http',
-                          request.get_host(),
-                          reverse('activate',
-                                  kwargs={
-                                      'user_id': user.id,
-                                      'activation_key': activation_key
-                                  }))
+    return "%s%s" % (get_host_url(request),
+                     reverse('activate',
+                             kwargs={
+                                 'user_id': user.id,
+                                 'activation_key': activation_key
+                             }))

@@ -32,7 +32,8 @@ TEMPLATE_DEBUG = True
 
 # Application definition
 
-PROJECT_APPS = ('yeoldegameshoppe', 'yogsbase', 'yogsauth', 'yogsgame','yogspayment')
+PROJECT_APPS = ('yeoldegameshoppe', 'yogsbase', 'yogsauth', 'yogsgame',
+                'yogspayment')
 
 INSTALLED_APPS = (
     'django.contrib.admin',
@@ -98,7 +99,6 @@ USE_TZ = True
 
 # Parse database configuration from $DATABASE_URL
 DATABASES['default'] = dj_database_url.config()
-
 # Enable Connection Pooling in Heroku. Note that the database errors will be
 # less helpful https://github.com/kennethreitz/django-postgrespool/issues/24
 if "DYNO" in os.environ:
@@ -128,6 +128,7 @@ STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 JENKINS_TASKS = (
     'django_jenkins.tasks.run_pep8',
     'django_jenkins.tasks.run_pyflakes',
+    'django_jenkins.tasks.run_pylint',
     'django_jenkins.tasks.run_jshint',
     'django_jenkins.tasks.run_csslint',
     'django_jenkins.tasks.run_sloccount'
