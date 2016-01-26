@@ -10,12 +10,11 @@ from django.http import HttpResponseRedirect
 from yeoldegameshoppe.utils import get_host_url
 from yogsauth.decorators import player_required
 
-<<<<<<< HEAD
-from yogsgame.models import Game, GameLicense
-=======
+
+
 from .models import Game, GameLicense
 from .forms import GameForm
->>>>>>> origin/master
+
 
 
 @player_required
@@ -26,8 +25,8 @@ def game(request, game_id):
     user = request.user
     game = get_object_or_404(Game, id=game_id)
     #if the user had already got the game_id
-    if game.get_gamelicense_for_user(user):
-        return render(request, 'game.djhtml', context=None)
+    # if game.get_gamelicense_for_user(user):
+    #     return render(request, 'game.djhtml', context=None)
 
     pid = str(game.id) + "a" + str(int(time.time())) + "a" +user.username
     amount = game.price
@@ -43,6 +42,8 @@ def game(request, game_id):
         'amount' : amount,
         'checksum' : checksum,
         'game' : game,
+        'user_owns_game': game.get_gamelicense_for_user(user),
+        'host_url':get_host_url(request),
         'checksumstr' : checksumstr
     }
 
