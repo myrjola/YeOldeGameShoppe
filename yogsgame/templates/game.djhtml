@@ -5,17 +5,48 @@
     <script type="text/javascript">
      window.addEventListener("message", receiveMessage, false)
 
+     function getCookie(cname) {
+         var name = cname + "=";
+         var ca = document.cookie.split(';');
+         for(var i=0; i<ca.length; i++) {
+             var c = ca[i];
+             while (c.charAt(0)==' ') c = c.substring(1);
+             if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
+         }
+         return "";
+     }
+
      function receiveMessage(event)
      {
          // For Chrome, the origin property is in the event.originalEvent object.
          var origin = event.origin || event.originalEvent.origin;
-         console.log(origin);
-         if (origin !== "{{ game_hostname }}")
-             console.log("Denied!");
-             return;
-         // ...
+
+         if (origin !== "{{ game_hostname }}") return;
+
+         var messageType = event.data.messageType;
+
+         if (messageType === "SCORE") {
+            var score = event.data.score;
+
+            $.ajax({
+                url: "{% url 'submit_highscore' game.id %}",
+                method: "POST",
+                data: {
+                    score: score,
+                    csrfmiddlewaretoken: getCookie('csrftoken')
+                },
+                headers: {
+                    /* 'X-CSRFToken':getCookie('csrftoken'), */
+                    'sessionid':getCookie('sessionid')
+                    },
+                success: function(data) {
+                    // TODO: Update high score list dynamically would be nice
+                    console.log("Success!")
+                    console.log($(this));
+                }
+            });
+         }
      }
-     /* window.myviewURL = '{ url myview foobar %}'; */
     </script>
 
     <h1>{{ game.title }}</h1>

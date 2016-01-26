@@ -4,14 +4,15 @@ from hashlib import md5
 from django.conf import settings
 from django.shortcuts import (render, get_object_or_404)
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect
-
+from django.http import (HttpResponseRedirect, HttpResponse,
+                         HttpResponseBadRequest)
+from django.views.decorators.csrf import csrf_protect
 
 from yeoldegameshoppe.utils import get_host_url
 from yogsauth.decorators import player_required
 
 
-from .models import Game, GameLicense
+from .models import Game, GameLicense, HighScore
 from .forms import GameForm
 
 
@@ -50,15 +51,20 @@ def game(request, game_id):
 
 
 @player_required
-def buy_game(request, game_id):
-    """A view for buying a game."""
+@csrf_protect
+def submit_highscore(request, game_id):
+    """Submit highscores through this view."""
     game = get_object_or_404(Game, pk=game_id)
 
-    # TODO validate payment here
-    user = request.user
-    game.buy_with_user(user)
+    player = request.user.player
 
-    return HttpResponseRedirect(reverse("game", kwargs={"game_id": game_id}))
+    if request.POST:
+        score = request.POST.get('score')
+        if score:
+            HighScore(game=game, player=player, score=score).save()
+            return HttpResponse('')
+
+    return HttpResponseBadRequest()
 
 
 @player_required
@@ -78,6 +84,7 @@ def all_games(request):
     """A view that shows all games."""
     context = {"games": Game.objects.all()}
     return render(request, 'all_games.djhtml', context=context)
+
 
 def add_game(request):
     form=GameForm(request.POST or None)
