@@ -42,7 +42,7 @@ def cancel(request):
     if get_checksum != calc_checksum:
         return render(request, 'game.djhtml', {"title":'Payment Failed'})
 
-    return render(request, 'game.djhtml', {"title":'Payment Cancelled'})
+    return HttpResponseRedirect("%s?payment_cancel=1" %reverse("game", kwargs={"game_id": game.id}))
 
 
 @login_required
@@ -57,7 +57,7 @@ def error(request):
     #verify the checksum
     if get_checksum != calc_checksum:
         return render(request, 'game.djhtml', {"title":'Payment Failed'})
-    return render(request, 'game.djhtml', {"title":'Error in Payment'})
+    return HttpResponseRedirect("%s?payment_error=1" %reverse("game", kwargs={"game_id": game.id}))
 
 
 def process(request):
