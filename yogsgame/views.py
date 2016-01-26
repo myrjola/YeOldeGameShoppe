@@ -11,10 +11,8 @@ from yeoldegameshoppe.utils import get_host_url
 from yogsauth.decorators import player_required
 
 
-
 from .models import Game, GameLicense
 from .forms import GameForm
-
 
 
 @player_required
@@ -44,6 +42,7 @@ def game(request, game_id):
         'game' : game,
         'user_owns_game': game.get_gamelicense_for_user(user),
         'host_url':get_host_url(request),
+        'game_hostname': game.get_game_hostname(request),
         'checksumstr' : checksumstr
     }
 

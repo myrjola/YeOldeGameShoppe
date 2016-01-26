@@ -10,9 +10,9 @@
          // For Chrome, the origin property is in the event.originalEvent object.
          var origin = event.origin || event.originalEvent.origin;
          console.log(origin);
-         if (origin !== "http://example.org:8080")
+         if (origin !== "{{ game_hostname }}")
+             console.log("Denied!");
              return;
-
          // ...
      }
      /* window.myviewURL = '{ url myview foobar %}'; */
