@@ -45,6 +45,16 @@
                     console.log($(this));
                 }
             });
+
+         } else if (messageType === "LOAD_REQUEST") {
+             var msg = {
+                 messageType: "ERROR",
+                 info: "Gamestate could not be loaded."
+             };
+             window.frames["game_iframe"].postMessage(msg, "{{ game_hostname }}");
+
+         } else {
+             console.log("Unknown message type " + messageType);
          }
      }
     </script>
