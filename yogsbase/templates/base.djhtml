@@ -15,52 +15,27 @@
           <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
               <ul class="nav navbar-nav navbar-right">
                   <li>
-                      <a class="page-scroll" href="#about">About</a>
+                      <a class="page-scroll" href="{% url 'profile' %}">Profile</a>
                   </li>
                   <li>
-                      <a class="page-scroll" href="#register">Register</a>
-                  </li>
-                  <li>
-                      <a class="page-scroll" href="#contact">Contact</a>
+                      <a class="page-scroll" href="{% url 'register' %}">Register</a>
                   </li>
                   <li>
                       <a class="page-scroll" href="{% url 'login' %}">Login</a>
                   </li>
-                  <li>
-                      <a class="page-scroll" href="#player">player</a>
+                      <a class="page-scroll" href="{% url 'game' %}">Game</a>
                   </li>
                   <li>
-                      <a class="page-scroll" href="#developer">Developer</a>
+                      <a class="page-scroll" href="{% url 'buy_game' %}">Buy Game</a>
                   </li>
                   <li>
-                      <a class="page-scroll" href="#purchase">Purchase</a>
+                      <a class="page-scroll" href="{% url 'addgame' %}">Add Game</a>
                   </li>
                   <li>
-                      <a class="page-scroll" href="#play">Play</a>
+                      <a class="page-scroll" href="{% url 'all_games' %}">All Games</a>
                   </li>
                   <li>
-                      <a class="page-scroll" href="#favourites">Favourites</a>
-                  </li>
-                  <li>
-                      <a class="page-scroll" href="#savegame">Save Game</a>
-                  </li>
-                  <li>
-                      <a class="page-scroll" href="#savehigscores">Save High Scores</a>
-                  </li>
-                  <li>
-                      <a class="page-scroll" href="#sharehighscores">Share High Scores</a>
-                  </li>
-                  <li>
-                      <a class="page-scroll" href="#addgame">Add Game</a>
-                  </li>
-                  <li>
-                      <a class="page-scroll" href="#modifygame">Modify Game</a>
-                  </li>
-                  <li>
-                      <a class="page-scroll" href="#deletegame">Delete Game</a>
-                  </li>
-                  <li>
-                      <a class="page-scroll" href="#Inventory">Inventory</a>
+                      <a class="page-scroll" href="{% url 'owned_games' %}">Owned Games</a>
                   </li>
               </ul>
           </div>
