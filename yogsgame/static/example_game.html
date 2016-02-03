@@ -23,15 +23,6 @@
       window.parent.postMessage(msg, "*");
     });
 
-    // Raise an error when the panic button is pressed
-    $("#error").click( function () {
-      var msg = {
-        "messageType": "ERROR",
-        "info": "Don't panic."
-      };
-      window.parent.postMessage(msg, "*");
-    });
-
     // Sends this game's state to the service.
     // The format of the game state is decided
     // by the game
@@ -127,7 +118,6 @@
   <div><span  id="score">0</span> Points</div>
 
   <button id="submit_score">Submit score</button><br>
-  <button id="error">Panic button</button><br>
 
   <button id="save">Save</button>
   <button id="load">Load</button>
