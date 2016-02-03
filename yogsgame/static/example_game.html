@@ -62,6 +62,8 @@
         updateItems();
       } else if (evt.data.messageType === "ERROR") {
         alert(evt.data.info);
+      } else {
+        console.log("Example game: Unknown message type " + evt.data.messageType);
       }
     });
 
