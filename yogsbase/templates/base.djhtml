@@ -9,6 +9,65 @@
   {% bootstrap_javascript %}
 </head>
 <body>
+  <nav class="navbar">
+      <div class="container">
+          <!-- Collect the nav links, forms, and other content for toggling -->
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+              <ul class="nav navbar-nav navbar-right">
+                  <li>
+                      <a class="page-scroll" href="#about">About</a>
+                  </li>
+                  <li>
+                      <a class="page-scroll" href="#register">Register</a>
+                  </li>
+                  <li>
+                      <a class="page-scroll" href="#contact">Contact</a>
+                  </li>
+                  <li>
+                      <a class="page-scroll" href="{% url 'login' %}">Login</a>
+                  </li>
+                  <li>
+                      <a class="page-scroll" href="#player">player</a>
+                  </li>
+                  <li>
+                      <a class="page-scroll" href="#developer">Developer</a>
+                  </li>
+                  <li>
+                      <a class="page-scroll" href="#purchase">Purchase</a>
+                  </li>
+                  <li>
+                      <a class="page-scroll" href="#play">Play</a>
+                  </li>
+                  <li>
+                      <a class="page-scroll" href="#favourites">Favourites</a>
+                  </li>
+                  <li>
+                      <a class="page-scroll" href="#savegame">Save Game</a>
+                  </li>
+                  <li>
+                      <a class="page-scroll" href="#savehigscores">Save High Scores</a>
+                  </li>
+                  <li>
+                      <a class="page-scroll" href="#sharehighscores">Share High Scores</a>
+                  </li>
+                  <li>
+                      <a class="page-scroll" href="#addgame">Add Game</a>
+                  </li>
+                  <li>
+                      <a class="page-scroll" href="#modifygame">Modify Game</a>
+                  </li>
+                  <li>
+                      <a class="page-scroll" href="#deletegame">Delete Game</a>
+                  </li>
+                  <li>
+                      <a class="page-scroll" href="#Inventory">Inventory</a>
+                  </li>
+              </ul>
+          </div>
+          <!-- /.navbar-collapse -->
+          </div>
+          <!-- /.container-fluid -->
+      </nav>
     {% include "facebook-init.djhtml" %}
     {% block content %}{% endblock %}
 </body>
