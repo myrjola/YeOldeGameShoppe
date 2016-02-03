@@ -45,6 +45,12 @@
                     console.log($(this));
                 }
             });
+
+         } else if (messageType === "ERROR") {
+             alert(event.data.info);
+
+         } else {
+             console.log("Unknown message type " + messageType);
          }
      }
     </script>
