@@ -2,7 +2,6 @@
 <html>
 <head>
 {% load static %}
-<link rel="stylesheet" type="text/css" href="{% static "wsdnav.css" %}">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ye Olde Game Shoppe</title>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
@@ -31,9 +30,15 @@
                   <li>
                       <a class="page-scroll" href="{% url 'register' %}">Register</a>
                   </li>
+                  {% if  user.is_authenticated %}
                   <li>
-                      <a class="page-scroll" href="{% url 'login' %}">Login</a>
+                      <a class="page-scroll" href="{% url 'logout' %}">Login</a>
                   <li>
+                    {% elseif %}
+                    {% endif %}
+                    <li>
+                        <a class="page-scroll" href="{% url 'login' %}">Login</a>
+                    <li>
                       <a class="page-scroll" href="{% url 'addgame' %}">Add Game</a>
                   </li>
                   <li>
