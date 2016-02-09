@@ -1,6 +1,9 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
 
 from yeoldegameshoppe.tests import YogsSeleniumTest
 
@@ -92,3 +95,28 @@ class BasicPlayerFunctionalityTestCase(YogsSeleniumTest):
         self.assertEqual(game, highscore2.game)
         self.assertEqual(10, highscore2.score)
         self.assertEqual("wealthyplayer", highscore2.player.user.username)
+
+    def test_error_messages(self):
+        """Tests ERROR type messages."""
+        self.login_user("wealthyplayer", "player")
+
+        # Switch to game
+        game = Game.objects.all().first()
+        self.selenium.get('%s/game/%d' % (self.live_server_url, game.pk))
+        game_iframe = self.selenium.find_element_by_name("game_iframe")
+        self.assertTrue(game_iframe)
+        self.selenium.switch_to.frame(game_iframe)
+
+        self.selenium.find_element_by_css_selector('#load').click()
+
+        try:
+            WebDriverWait(self.selenium, 1).until(
+                EC.alert_is_present(),
+                'Timed out waiting for alert popup')
+
+            alert = self.selenium.switch_to_alert()
+            self.assertTrue(game_iframe)
+            alert.accept()
+
+        except TimeoutException:
+            self.fail("No alert popup appeared")
