@@ -34,7 +34,7 @@
                   <li>
                       <a class="page-scroll" href="{% url 'logout' %}">Login</a>
                   <li>
-                    {% elseif %}
+                    {% else %}
                     {% endif %}
                     <li>
                         <a class="page-scroll" href="{% url 'login' %}">Login</a>
