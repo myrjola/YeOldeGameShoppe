@@ -24,29 +24,34 @@
           <!-- Collect the nav links, forms, and other content for toggling -->
           <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
               <ul class="nav navbar-nav navbar-right">
+                  {% if  user.is_authenticated %}
                   <li>
                       <a class="page-scroll" href="{% url 'profile' %}">Profile</a>
                   </li>
                   <li>
+                      <a class="page-scroll" href="{% url 'logout' %}">Logout</a>
+                  </li>
+                    {% else %}
+                  <li>
+                      <a class="page-scroll" href="{% url 'login' %}">Login</a>
+                  </li>
+                  <li>
                       <a class="page-scroll" href="{% url 'register' %}">Register</a>
                   </li>
-                  {% if  user.is_authenticated %}
-                  <li>
-                      <a class="page-scroll" href="{% url 'logout' %}">Login</a>
-                  <li>
-                    {% else %}
                     {% endif %}
-                    <li>
-                        <a class="page-scroll" href="{% url 'login' %}">Login</a>
-                    <li>
-                      <a class="page-scroll" href="{% url 'addgame' %}">Add Game</a>
-                  </li>
+                  {% if  user.player %}
                   <li>
                       <a class="page-scroll" href="{% url 'all_games' %}">All Games</a>
                   </li>
                   <li>
                       <a class="page-scroll" href="{% url 'owned_games' %}">Owned Games</a>
                   </li>
+                  {% endif %}
+                  {% if  user.developer %}
+                  <li>
+                      <a class="page-scroll" href="{% url 'addgame' %}">Add Game</a>
+                  </li>
+                  {% endif %}
               </ul>
           </div>
           <!-- /.navbar-collapse -->
