@@ -48,6 +48,8 @@ urlpatterns = patterns(
     # yogsgame
     url(r'^game/(?P<game_id>\d+)$', yogsgame.views.game,
         name='game'),
+    url(r'^game/(?P<game_id>\d+)/top10.json$', yogsgame.views.top10,
+        name='top10'),
     url(r'^owned_games$', yogsgame.views.owned_games, name='owned_games'),
     url(r'^all_games$', yogsgame.views.all_games, name='all_games'),
     url(r'^game/(?P<game_id>\d+)/submit_highscore$',

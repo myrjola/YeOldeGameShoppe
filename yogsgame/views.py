@@ -3,9 +3,7 @@ from hashlib import md5
 
 from django.conf import settings
 from django.shortcuts import (render, get_object_or_404)
-from django.core.urlresolvers import reverse
-from django.http import (HttpResponseRedirect, HttpResponse,
-                         HttpResponseBadRequest)
+from django.http import (HttpResponse, HttpResponseBadRequest, JsonResponse)
 from django.views.decorators.csrf import csrf_protect
 
 from yeoldegameshoppe.utils import get_host_url
@@ -65,6 +63,21 @@ def submit_highscore(request, game_id):
             return HttpResponse('')
 
     return HttpResponseBadRequest()
+
+
+def top10(request, game_id):
+    """Returns top 10 high scores for a game as JSON."""
+    top10 = HighScore.objects.filter(game_id=game_id).order_by('-score')[:10]
+
+    top10_formatted = [
+        {
+            'name': highscore.player.get_name_for_high_score(),
+            'score': highscore.score
+        }
+        for highscore in top10.all()
+    ]
+
+    return JsonResponse(top10_formatted, safe=False)
 
 
 @player_required
