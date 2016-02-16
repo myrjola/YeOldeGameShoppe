@@ -3,12 +3,6 @@
 
 {% block content %}
     <h1> Welcome {{ request.user.username }}!</h1>
-    <div
-        class="fb-like"
-        data-share="true"
-        data-width="450"
-        data-show-faces="true">
-    </div>
     <form action={% url 'profile' %} method="post" class="form">
         {% csrf_token %}
         <h2>User settings</h2>

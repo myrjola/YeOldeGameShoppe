@@ -2,8 +2,71 @@
 {% load bootstrap3 %}
 
 {% block content %}
+    <script type="text/javascript">
+     window.addEventListener("message", receiveMessage, false)
+
+     function getCookie(cname) {
+         var name = cname + "=";
+         var ca = document.cookie.split(';');
+         for(var i=0; i<ca.length; i++) {
+             var c = ca[i];
+             while (c.charAt(0)==' ') c = c.substring(1);
+             if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
+         }
+         return "";
+     }
+
+     function receiveMessage(event)
+     {
+         // For Chrome, the origin property is in the event.originalEvent object.
+         var origin = event.origin || event.originalEvent.origin;
+
+         if (origin !== "{{ game_hostname }}") return;
+
+         var messageType = event.data.messageType;
+
+         if (messageType === "SCORE") {
+            var score = event.data.score;
+
+            $.ajax({
+                url: "{% url 'submit_highscore' game.id %}",
+                method: "POST",
+                data: {
+                    score: score,
+                    csrfmiddlewaretoken: getCookie('csrftoken')
+                },
+                headers: {
+                    /* 'X-CSRFToken':getCookie('csrftoken'), */
+                    'sessionid':getCookie('sessionid')
+                    },
+                success: function(data) {
+                    // TODO: Update high score list dynamically would be nice
+                    console.log("Success!")
+                    console.log($(this));
+                }
+            });
+         }
+     }
+    </script>
 
     <h1>{{ game.title }}</h1>
+    <div
+        class="fb-like"
+        data-share="true"
+        data-width="450"
+        data-show-faces="true">
+    </div>
+
+    {% if request.GET.payment_cancel %}
+        <div class="alert alert-danger">
+            <strong>Payment was cancelled.</strong>
+        </div>
+    {% endif %}
+    {% if request.GET.payment_error %}
+        <div class="alert alert-danger">
+            <strong>An error occurred while processing the payment.</strong>
+        </div>
+    {% endif %}
 
     {% if user_owns_game %}
     <iframe name="game_iframe" src="{{ game.url }}" width="300" height="300">

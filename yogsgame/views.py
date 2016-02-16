@@ -4,14 +4,16 @@ from hashlib import md5
 from django.conf import settings
 from django.shortcuts import (render, get_object_or_404)
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect
-
+from django.http import (HttpResponseRedirect, HttpResponse,
+                         HttpResponseBadRequest)
+from django.views.decorators.csrf import csrf_protect
 
 from yeoldegameshoppe.utils import get_host_url
 from yogsauth.decorators import player_required,developer_required
 from django.views.decorators.csrf import csrf_protect
 
-from .models import Game, GameLicense
+
+from .models import Game, GameLicense, HighScore
 from .forms import GameForm
 
 
@@ -22,39 +24,48 @@ def game(request, game_id):
     A player can buy the game and play it from this view."""
     user = request.user
     game = get_object_or_404(Game, id=game_id)
-    pid = user.username + str(game.id) + str(int(time.time()))
+    #if the user had already got the game_id
+    # if game.get_gamelicense_for_user(user):
+    #     return render(request, 'game.djhtml', context=None)
+
+    pid = str(game.id) + "a" + str(int(time.time())) + "a" +user.username
     amount = game.price
     sid = settings.PAYMENT_SELLER_ID
     secret_key = settings.PAYMENT_SECRET_KEY
-    checksumstr = "pid={}&sid={}&amount={}&token={}".format(pid,
-                                                            sid,
-                                                            amount,
-                                                            secret_key)
+
+    checksumstr = "pid={}&sid={}&amount={}&token={}".format(pid, sid, amount, secret_key)
     checksum = md5(checksumstr.encode('ascii')).hexdigest()
 
     context = {
-        'pid': pid,
-        'sid': sid,
-        'amount': amount,
-        'checksum': checksum,
-        'game': game,
+        'pid' : pid,
+        'sid' : sid,
+        'amount' : amount,
+        'checksum' : checksum,
+        'game' : game,
         'user_owns_game': game.get_gamelicense_for_user(user),
-        'host_url': get_host_url(request)
+        'host_url':get_host_url(request),
+        'game_hostname': game.get_game_hostname(request),
+        'checksumstr' : checksumstr
     }
 
     return render(request, 'game.djhtml', context=context)
 
 
 @player_required
-def buy_game(request, game_id):
-    """A view for buying a game."""
+@csrf_protect
+def submit_highscore(request, game_id):
+    """Submit highscores through this view."""
     game = get_object_or_404(Game, pk=game_id)
 
-    # TODO validate payment here
-    user = request.user
-    game.buy_with_user(user)
+    player = request.user.player
 
-    return HttpResponseRedirect(reverse("game", kwargs={"game_id": game_id}))
+    if request.POST:
+        score = request.POST.get('score')
+        if score:
+            HighScore(game=game, player=player, score=score).save()
+            return HttpResponse('')
+
+    return HttpResponseBadRequest()
 
 
 @player_required
@@ -75,8 +86,12 @@ def all_games(request):
     context = {"games": Game.objects.all()}
     return render(request, 'all_games.djhtml', context=context)
 
+<<<<<<< HEAD
 @developer_required
 @csrf_protect
+=======
+
+>>>>>>> 524758d3947380b0324861c0b6aa2fd2d9685672
 def add_game(request):
     form=GameForm(request.POST or None)
     context={

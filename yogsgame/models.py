@@ -1,5 +1,7 @@
 from django.db import models
 
+from yeoldegameshoppe.utils import get_host_url
+
 
 class NotAPlayerException(Exception):
     """Raised when a user account haven't activated the player status."""
@@ -33,6 +35,14 @@ class Game(models.Model):
         license = GameLicense(game=self, player=user.player,
                               purchase_price=self.price)
         return license.save()
+
+    def get_game_hostname(self, request):
+        """Return the hostname part of the game URL.
+
+        If using local paths like '/example_game.html' the request is used to
+        return the hostname.
+        """
+        return self.url.split("/")[0] or get_host_url(request)
 
 
 class GameLicense(models.Model):
