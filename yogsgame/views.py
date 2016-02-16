@@ -74,6 +74,7 @@ def all_games(request):
     context = {"games": Game.objects.all()}
     return render(request, 'all_games.djhtml', context=context)
 
+@developer_required
 def add_game(request):
     form=GameForm(request.POST or None)
     context={

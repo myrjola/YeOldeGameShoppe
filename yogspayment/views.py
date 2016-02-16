@@ -10,7 +10,8 @@ import hashlib
 import time
 from datetime import datetime
 import json
-from yogsauth.decorators import player_required
+from yogsauth.decorators import player_required,developer_required
+
 from hashlib import md5
 from django.conf import settings
 from django.contrib.auth import get_user_model
