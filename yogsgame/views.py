@@ -8,7 +8,8 @@ from django.http import HttpResponseRedirect
 
 
 from yeoldegameshoppe.utils import get_host_url
-from yogsauth.decorators import player_required
+from yogsauth.decorators import player_required,developer_required
+from django.views.decorators.csrf import csrf_protect
 
 from .models import Game, GameLicense
 from .forms import GameForm
@@ -75,6 +76,7 @@ def all_games(request):
     return render(request, 'all_games.djhtml', context=context)
 
 @developer_required
+@csrf_protect
 def add_game(request):
     form=GameForm(request.POST or None)
     context={
