@@ -8,20 +8,19 @@ from django.views.decorators.csrf import csrf_protect
 
 from yeoldegameshoppe.utils import get_host_url
 from yogsauth.decorators import player_required, developer_required
-from django.views.decorators.csrf import csrf_protect
 
 from .models import Game, GameLicense, HighScore
 from .forms import GameForm
 
 
 @player_required
-def game(request, game_id):
+def game_view(request, game_id):
     """The main view for the Game model.
 
     A player can buy the game and play it from this view."""
     user = request.user
     game = get_object_or_404(Game, id=game_id)
-    #if the user had already got the game_id
+    # if the user had already got the game_id
     # if game.get_gamelicense_for_user(user):
     #     return render(request, 'game.djhtml', context=None)
 
@@ -66,7 +65,7 @@ def submit_highscore(request, game_id):
     return HttpResponseBadRequest()
 
 
-def top10(request, game_id):
+def top10_json(_, game_id):
     """Returns top 10 high scores for a game as JSON."""
     top10 = HighScore.objects.filter(game_id=game_id).order_by('-score')[:10]
 
@@ -102,6 +101,7 @@ def all_games(request):
 @developer_required
 @csrf_protect
 def add_game(request):
+    """View to add a game to a developer's inventory."""
     form = GameForm(request.POST or None)
     context = {"form": form}
     if form.is_valid():

@@ -42,13 +42,14 @@ urlpatterns = patterns(
         name='send_activation_email'),
     url(r'^profile/$', yogsauth.views.profile, name='profile'),
     url(r'^register$', yogsauth.views.register, name='register'),
-    #developer_module
+
+    # developer views
     url(r'^addgame$', yogsgame.views.add_game, name='addgame'),
 
     # yogsgame
-    url(r'^game/(?P<game_id>\d+)$', yogsgame.views.game,
+    url(r'^game/(?P<game_id>\d+)$', yogsgame.views.game_view,
         name='game'),
-    url(r'^game/(?P<game_id>\d+)/top10.json$', yogsgame.views.top10,
+    url(r'^game/(?P<game_id>\d+)/top10.json$', yogsgame.views.top10_json,
         name='top10'),
     url(r'^owned_games$', yogsgame.views.owned_games, name='owned_games'),
     url(r'^all_games$', yogsgame.views.all_games, name='all_games'),

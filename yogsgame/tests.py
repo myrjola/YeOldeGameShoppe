@@ -89,7 +89,6 @@ class BasicPlayerFunctionalityTestCase(YogsSeleniumTest):
         self.assertEqual("0", score.text)
         self.selenium.find_element_by_css_selector('#submit_score').click()
 
-
         self.selenium.find_element_by_css_selector('#add_points').click()
         self.selenium.find_element_by_css_selector('#submit_score').click()
 
@@ -109,7 +108,6 @@ class BasicPlayerFunctionalityTestCase(YogsSeleniumTest):
         self.assertEqual(game, highscore2.game)
         self.assertEqual(10, highscore2.score)
         self.assertEqual("wealthyplayer", highscore2.player.user.username)
-
 
     def test_error_messages(self):
         """Tests ERROR type messages."""

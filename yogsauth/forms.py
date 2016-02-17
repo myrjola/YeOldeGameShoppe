@@ -7,12 +7,14 @@ from .models import Player, Developer
 
 
 class UserForm(ModelForm):
+    """Form for the user accounts."""
     class Meta:
         model = get_user_model()
         fields = ['email']
 
 
 class PlayerForm(ModelForm):
+    """Form for the player user group."""
     class Meta:
         model = Player
         fields = ['gamertag']
@@ -35,6 +37,8 @@ class PlayerForm(ModelForm):
 
 
 class DeveloperForm(ModelForm):
+    """Form for the developer user group."""
+
     # The SWIFT-BIC code is between 8 and 11 characters
     swift_length = Developer._meta.get_field('swift').max_length
     swift = forms.fields.CharField(min_length=8, max_length=swift_length)
@@ -52,8 +56,8 @@ class UserCreationObligatoryEmailForm(UserCreationForm):
         model = get_user_model()
         fields = ("username", "password1", "password2", "email")
 
-    def save(self):
-        user = super(UserCreationObligatoryEmailForm, self).save(commit=False)
+    def save(self, commit=False):
+        user = super(UserCreationObligatoryEmailForm, self).save(commit=commit)
         user.email = self.cleaned_data["email"]
 
         # User needs to validate email address before activation

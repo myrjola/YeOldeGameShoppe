@@ -76,7 +76,7 @@ def register(request):
 
 
 @csrf_protect
-def activate(request, user_id, activation_key):
+def activate(_, user_id, activation_key):
     """Activate user with link sent to email."""
     user = get_object_or_404(get_user_model(), id=user_id)
 
