@@ -7,9 +7,8 @@ from django.http import (HttpResponse, HttpResponseBadRequest, JsonResponse)
 from django.views.decorators.csrf import csrf_protect
 
 from yeoldegameshoppe.utils import get_host_url
-from yogsauth.decorators import player_required,developer_required
+from yogsauth.decorators import player_required, developer_required
 from django.views.decorators.csrf import csrf_protect
-
 
 from .models import Game, GameLicense, HighScore
 from .forms import GameForm
@@ -26,24 +25,25 @@ def game(request, game_id):
     # if game.get_gamelicense_for_user(user):
     #     return render(request, 'game.djhtml', context=None)
 
-    pid = str(game.id) + "a" + str(int(time.time())) + "a" +user.username
+    pid = str(game.id) + "a" + str(int(time.time())) + "a" + user.username
     amount = game.price
     sid = settings.PAYMENT_SELLER_ID
     secret_key = settings.PAYMENT_SECRET_KEY
 
-    checksumstr = "pid={}&sid={}&amount={}&token={}".format(pid, sid, amount, secret_key)
+    checksumstr = "pid={}&sid={}&amount={}&token={}".format(pid, sid, amount,
+                                                            secret_key)
     checksum = md5(checksumstr.encode('ascii')).hexdigest()
 
     context = {
-        'pid' : pid,
-        'sid' : sid,
-        'amount' : amount,
-        'checksum' : checksum,
-        'game' : game,
+        'pid': pid,
+        'sid': sid,
+        'amount': amount,
+        'checksum': checksum,
+        'game': game,
         'user_owns_game': game.get_gamelicense_for_user(user),
-        'host_url':get_host_url(request),
+        'host_url': get_host_url(request),
         'game_hostname': game.get_game_hostname(request),
-        'checksumstr' : checksumstr
+        'checksumstr': checksumstr
     }
 
     return render(request, 'game.djhtml', context=context)
@@ -74,8 +74,7 @@ def top10(request, game_id):
         {
             'name': highscore.player.get_name_for_high_score(),
             'score': highscore.score
-        }
-        for highscore in top10.all()
+        } for highscore in top10.all()
     ]
 
     return JsonResponse(top10_formatted, safe=False)
@@ -99,15 +98,14 @@ def all_games(request):
     context = {"games": Game.objects.all()}
     return render(request, 'all_games.djhtml', context=context)
 
+
 @developer_required
 @csrf_protect
 def add_game(request):
-    form=GameForm(request.POST or None)
-    context={
-        "form": form
-    }
+    form = GameForm(request.POST or None)
+    context = {"form": form}
     if form.is_valid():
         game = form.save(commit=False)
-        game.developer=request.user.developer
+        game.developer = request.user.developer
         game.save()
-    return render(request,"addgame.djhtml",context)
+    return render(request, "addgame.djhtml", context)
