@@ -17,13 +17,9 @@ def success(request):
     get_checksum = result[2]
     calc_checksum = result[3]
 
-    #verify the checksum
+    # verify the checksum
     if get_checksum != calc_checksum:
         return render(request, 'game.djhtml', {"title": 'Payment Failed'})
-
-    # check if the url belongs to the user
-    # if str(user) != str(buyer):
-    #     text = "Wrong URL<br><a href=\"http://localhost:8000/game/\">Return to Homepage</a>"
 
     game.buy_with_user(user)
 
@@ -36,11 +32,10 @@ def cancel(request):
     get_checksum = request.GET.get('checksum', '')
     result = process(request)
     game = result[0]
-    user = result[1]
     get_checksum = result[2]
     calc_checksum = result[3]
 
-    #verify the checksum
+    # verify the checksum
     if get_checksum != calc_checksum:
         return render(request, 'game.djhtml', {"title": 'Payment Failed'})
 
@@ -54,11 +49,10 @@ def error(request):
     get_checksum = request.GET.get('checksum', '')
     result = process(request)
     game = result[0]
-    user = result[1]
     get_checksum = result[2]
     calc_checksum = result[3]
 
-    #verify the checksum
+    # verify the checksum
     if get_checksum != calc_checksum:
         return render(request, 'game.djhtml', {"title": 'Payment Failed'})
     return HttpResponseRedirect("%s?payment_error=1" %
