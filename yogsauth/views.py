@@ -9,10 +9,9 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
 from django.http import Http404
 
-
 from .forms import (UserCreationObligatoryEmailForm,
-                    EmailValidationAuthenticationForm,
-                    UserForm, PlayerForm, DeveloperForm)
+                    EmailValidationAuthenticationForm, UserForm, PlayerForm,
+                    DeveloperForm)
 from .models import EmailValidation
 from .utils import (send_activation_email_to_user,
                     get_activation_link_for_user_and_request)
@@ -30,8 +29,7 @@ def profile(request):
     player = None
     if hasattr(user, 'player'):
         player = user.player
-    player_form = PlayerForm(request.POST or None,
-                             instance=player)
+    player_form = PlayerForm(request.POST or None, instance=player)
     if player_form.is_valid():
         player = player_form.save(commit=False)
         player.user = user
@@ -40,8 +38,7 @@ def profile(request):
     developer = None
     if hasattr(user, 'developer'):
         developer = user.developer
-    developer_form = DeveloperForm(request.POST or None,
-                                   instance=developer)
+    developer_form = DeveloperForm(request.POST or None, instance=developer)
     if developer_form.is_valid():
         developer = developer_form.save(commit=False)
         developer.user = user
@@ -73,7 +70,8 @@ def register(request):
         send_activation_email_to_user(user, request)
         return validation_email_sent_redirect(user, request)
 
-    return render(request, 'register.djhtml',
+    return render(request,
+                  'register.djhtml',
                   context={'registration_form': registration_form})
 
 
@@ -85,11 +83,11 @@ def activate(request, user_id, activation_key):
     try:
         user.emailvalidation.activate_user_against_token(activation_key)
     except EmailValidation.KeyExpiredException:
-        return HttpResponseRedirect(
-            "%s?activation_token_expired=1" % reverse('send_activation_email'))
+        return HttpResponseRedirect("%s?activation_token_expired=1" %
+                                    reverse('send_activation_email'))
     except EmailValidation.UserActiveException:
-        return HttpResponseRedirect(
-            "%s?user_already_activated=1" % reverse('login'))
+        return HttpResponseRedirect("%s?user_already_activated=1" %
+                                    reverse('login'))
     except EmailValidation.IncorrectTokenException:
         raise Http404("Invalid activation token.")
 

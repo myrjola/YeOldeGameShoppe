@@ -58,7 +58,10 @@ class Player(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL,
                                 on_delete=models.CASCADE)
     gamertag = models.fields.CharField(
-        max_length=32, unique=False, null=True, blank=True,
+        max_length=32,
+        unique=False,
+        null=True,
+        blank=True,
         help_text="Optional name to show in high-scores.")
 
     def get_name_for_high_score(self):

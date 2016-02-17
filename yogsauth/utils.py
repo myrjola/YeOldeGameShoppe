@@ -34,8 +34,8 @@ def generate_email_validation_token_for_user(user):
     email_validation.activation_key = token
 
     # Don't let validation keys be active too long
-    email_validation.key_expires = (timezone.now() +
-                                    datetime.timedelta(days=2))
+    email_validation.key_expires = (
+        timezone.now() + datetime.timedelta(days=2))
 
     email_validation.save()
 
@@ -44,8 +44,11 @@ def send_activation_email_to_user(user, request):
     """Send a link that will activate the user account."""
     generate_email_validation_token_for_user(user)
     activation_link = get_activation_link_for_user_and_request(user, request)
-    send_mail('Ye Olde Game Shoppe activation', activation_link,
-              'yeoldegameshoppe', [user.email], fail_silently=False)
+    send_mail('Ye Olde Game Shoppe activation',
+              activation_link,
+              'yeoldegameshoppe',
+              [user.email],
+              fail_silently=False)
 
 
 def get_activation_link_for_user_and_request(user, request):

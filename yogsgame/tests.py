@@ -123,8 +123,7 @@ class BasicPlayerFunctionalityTestCase(YogsSeleniumTest):
 
         try:
             WebDriverWait(self.selenium, 1).until(
-                EC.alert_is_present(),
-                'Timed out waiting for alert popup')
+                EC.alert_is_present(), 'Timed out waiting for alert popup')
 
             alert = self.selenium.switch_to_alert()
             self.assertTrue(game_iframe)

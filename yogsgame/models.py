@@ -32,7 +32,8 @@ class Game(models.Model):
         if not hasattr(user, "player"):
             raise NotAPlayerException()
 
-        license = GameLicense(game=self, player=user.player,
+        license = GameLicense(game=self,
+                              player=user.player,
                               purchase_price=self.price)
         return license.save()
 
@@ -47,10 +48,8 @@ class Game(models.Model):
 
 class GameLicense(models.Model):
     """A model representing a bought license to play a game."""
-    game = models.ForeignKey('Game',
-                             on_delete=models.CASCADE)
-    player = models.ForeignKey('yogsauth.Player',
-                               on_delete=models.CASCADE)
+    game = models.ForeignKey('Game', on_delete=models.CASCADE)
+    player = models.ForeignKey('yogsauth.Player', on_delete=models.CASCADE)
 
     purchase_price = models.DecimalField(max_digits=10, decimal_places=2)
     bought_at = models.DateTimeField(auto_now_add=True)
@@ -58,10 +57,8 @@ class GameLicense(models.Model):
 
 class HighScore(models.Model):
     """The high-scores are saved in this model."""
-    game = models.ForeignKey('Game',
-                             on_delete=models.CASCADE)
-    player = models.ForeignKey('yogsauth.Player',
-                               on_delete=models.CASCADE)
+    game = models.ForeignKey('Game', on_delete=models.CASCADE)
+    player = models.ForeignKey('yogsauth.Player', on_delete=models.CASCADE)
 
     score = models.IntegerField()
     timestamp = models.DateTimeField(auto_now_add=True)

@@ -16,11 +16,12 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='EmailValidation',
             fields=[
-                ('id', models.AutoField(auto_created=True, serialize=False,
-                                        verbose_name='ID', primary_key=True)),
+                ('id', models.AutoField(auto_created=True,
+                                        serialize=False,
+                                        verbose_name='ID',
+                                        primary_key=True)),
                 ('activation_key', models.CharField(max_length=40)),
                 ('key_expires', models.DateTimeField()),
                 ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL)),
-            ],
-        ),
+            ], ),
     ]

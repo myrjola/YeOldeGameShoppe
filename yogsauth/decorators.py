@@ -16,8 +16,7 @@ def _user_group_required(function=None, user_group=''):
 
     actual_decorator = user_passes_test(
         lambda u: u.is_authenticated() and hasattr(u, user_group),
-        login_url=redirect_url
-    )
+        login_url=redirect_url)
     if function:
         return actual_decorator(function)
     return actual_decorator

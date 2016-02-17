@@ -8,6 +8,7 @@ from django.conf import settings
 from yogsauth.decorators import player_required
 from yogsgame.models import Game
 
+
 def success(request):
     get_checksum = request.GET.get('checksum', '')
     result = process(request)
@@ -18,7 +19,7 @@ def success(request):
 
     #verify the checksum
     if get_checksum != calc_checksum:
-        return render(request, 'game.djhtml', {"title":'Payment Failed'})
+        return render(request, 'game.djhtml', {"title": 'Payment Failed'})
 
     # check if the url belongs to the user
     # if str(user) != str(buyer):
@@ -28,6 +29,7 @@ def success(request):
 
     # Redirect back to game page to play the game
     return HttpResponseRedirect(reverse("game", kwargs={"game_id": game.id}))
+
 
 @player_required
 def cancel(request):
@@ -40,9 +42,11 @@ def cancel(request):
 
     #verify the checksum
     if get_checksum != calc_checksum:
-        return render(request, 'game.djhtml', {"title":'Payment Failed'})
+        return render(request, 'game.djhtml', {"title": 'Payment Failed'})
 
-    return HttpResponseRedirect("%s?payment_cancel=1" %reverse("game", kwargs={"game_id": game.id}))
+    return HttpResponseRedirect("%s?payment_cancel=1" %
+                                reverse("game",
+                                        kwargs={"game_id": game.id}))
 
 
 @login_required
@@ -56,8 +60,10 @@ def error(request):
 
     #verify the checksum
     if get_checksum != calc_checksum:
-        return render(request, 'game.djhtml', {"title":'Payment Failed'})
-    return HttpResponseRedirect("%s?payment_error=1" %reverse("game", kwargs={"game_id": game.id}))
+        return render(request, 'game.djhtml', {"title": 'Payment Failed'})
+    return HttpResponseRedirect("%s?payment_error=1" %
+                                reverse("game",
+                                        kwargs={"game_id": game.id}))
 
 
 def process(request):
@@ -73,7 +79,8 @@ def process(request):
     game = get_object_or_404(Game, id=gameid)
     user = get_user_model().objects.get(username=buyer)
 
-    checksumstr = "pid={}&ref={}&result={}&token={}".format(pid, ref, result, secret_key)
+    checksumstr = "pid={}&ref={}&result={}&token={}".format(pid, ref, result,
+                                                            secret_key)
     calc_checksum = md5(checksumstr.encode('ascii')).hexdigest()
 
     return [game, user, get_checksum, calc_checksum]

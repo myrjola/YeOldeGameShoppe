@@ -17,8 +17,7 @@ class PlayerTestCase(TestCase):
         user = get_user_model().objects.create(username="user")
         user2 = get_user_model().objects.create(username="user2")
         Player.objects.create(user=user)
-        Player.objects.create(gamertag="awesomegamer",
-                              user=user2)
+        Player.objects.create(gamertag="awesomegamer", user=user2)
 
     def test_get_name_for_highscore(self):
         """We should use gamertag for high scores, but fallback to username."""
@@ -91,7 +90,8 @@ class EmailValidationTestCase(TestCase):
 
     def test_token_expiration(self):
         """The user can't be activated when the token has expired."""
-        self.emailvalidation.key_expires = timezone.now()-timedelta(minutes=1)
+        self.emailvalidation.key_expires = timezone.now() - timedelta(
+            minutes=1)
 
         correct_token = self.emailvalidation.activation_key
         with self.assertRaises(EmailValidation.KeyExpiredException):
