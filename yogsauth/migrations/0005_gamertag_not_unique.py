@@ -12,9 +12,9 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='player',
             name='gamertag',
-            field=models.CharField(help_text=
-                                   'Optional name to show in high-scores.',
+            field=models.CharField(help_text='Optional name for high-scores.',
                                    max_length=32,
                                    blank=True,
-                                   null=True), ),
+                                   null=True)
+        )
     ]
