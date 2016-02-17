@@ -89,24 +89,27 @@ class BasicPlayerFunctionalityTestCase(YogsSeleniumTest):
         self.assertEqual("0", score.text)
         self.selenium.find_element_by_css_selector('#submit_score').click()
 
-        highscore1 = HighScore.objects.all().last()
-        self.assertEqual(game, highscore1.game)
-        self.assertEqual(0, highscore1.score)
-        self.assertEqual("wealthyplayer", highscore1.player.user.username)
 
         self.selenium.find_element_by_css_selector('#add_points').click()
         self.selenium.find_element_by_css_selector('#submit_score').click()
 
-        highscore2 = HighScore.objects.all().last()
-        self.assertEqual(game, highscore2.game)
-        self.assertEqual(10, highscore2.score)
-        self.assertEqual("wealthyplayer", highscore2.player.user.username)
-
-        # Both scores should exist in the highscore list
+        # Both scores should exist in the highscore list...
         self.selenium.switch_to_default_content()
         top10 = self.selenium.find_element_by_css_selector('#top10')
         self.assertIn("0", top10.text)
         self.assertIn("10", top10.text)
+
+        # ... and in the database
+        highscores = HighScore.objects.all()
+        highscore1 = highscores[0]
+        self.assertEqual(game, highscore1.game)
+        self.assertEqual(0, highscore1.score)
+        self.assertEqual("wealthyplayer", highscore1.player.user.username)
+        highscore2 = highscores[1]
+        self.assertEqual(game, highscore2.game)
+        self.assertEqual(10, highscore2.score)
+        self.assertEqual("wealthyplayer", highscore2.player.user.username)
+
 
     def test_error_messages(self):
         """Tests ERROR type messages."""
