@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+{% load static %}
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ye Olde Game Shoppe</title>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
@@ -9,6 +10,54 @@
   {% bootstrap_javascript %}
 </head>
 <body>
+  <nav class="navbar navbar-default">
+      <div class="container-fluid">
+          <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="#">Ye Olde Gameshoppe</a>
+          </div>
+          <!-- Collect the nav links, forms, and other content for toggling -->
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+              <ul class="nav navbar-nav navbar-right">
+                  {% if  user.is_authenticated %}
+                  <li>
+                      <a class="page-scroll" href="{% url 'profile' %}">Profile</a>
+                  </li>
+                  <li>
+                      <a class="page-scroll" href="{% url 'logout' %}">Logout</a>
+                  </li>
+                    {% else %}
+                  <li>
+                      <a class="page-scroll" href="{% url 'login' %}">Login</a>
+                  </li>
+                  <li>
+                      <a class="page-scroll" href="{% url 'register' %}">Register</a>
+                  </li>
+                    {% endif %}
+                  {% if  user.player %}
+                  <li>
+                      <a class="page-scroll" href="{% url 'all_games' %}">All Games</a>
+                  </li>
+                  <li>
+                      <a class="page-scroll" href="{% url 'owned_games' %}">Owned Games</a>
+                  </li>
+                  {% endif %}
+                  {% if  user.developer %}
+                  <li>
+                      <a class="page-scroll" href="{% url 'addgame' %}">Add Game</a>
+                  </li>
+                  {% endif %}
+              </ul>
+          </div>
+          <!-- /.navbar-collapse -->
+          </div>
+          <!-- /.container-fluid -->
+      </nav>
     {% include "facebook-init.djhtml" %}
     {% block content %}{% endblock %}
 </body>

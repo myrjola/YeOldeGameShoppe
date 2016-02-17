@@ -7,7 +7,8 @@ from django.http import (HttpResponse, HttpResponseBadRequest, JsonResponse)
 from django.views.decorators.csrf import csrf_protect
 
 from yeoldegameshoppe.utils import get_host_url
-from yogsauth.decorators import player_required
+from yogsauth.decorators import player_required,developer_required
+from django.views.decorators.csrf import csrf_protect
 
 
 from .models import Game, GameLicense, HighScore
@@ -98,7 +99,12 @@ def all_games(request):
     context = {"games": Game.objects.all()}
     return render(request, 'all_games.djhtml', context=context)
 
+<<<<<<< HEAD
+@developer_required
+@csrf_protect
+=======
 
+>>>>>>> 524758d3947380b0324861c0b6aa2fd2d9685672
 def add_game(request):
     form=GameForm(request.POST or None)
     context={
