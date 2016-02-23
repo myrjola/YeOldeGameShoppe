@@ -8,6 +8,11 @@ class NotAPlayerException(Exception):
     pass
 
 
+class GameAlreadyOwnedException(Exception):
+    """Raised when trying to buy a game a second time."""
+    pass
+
+
 class Game(models.Model):
     """A model for the computer games in the service."""
 
@@ -32,6 +37,9 @@ class Game(models.Model):
         if not hasattr(user, "player"):
             raise NotAPlayerException()
 
+        if GameLicense.objects.filter(player=user.player, game=self).exists():
+            raise GameAlreadyOwnedException()
+
         license = GameLicense(game=self,
                               player=user.player,
                               purchase_price=self.price)
@@ -52,7 +60,11 @@ class GameLicense(models.Model):
     player = models.ForeignKey('yogsauth.Player', on_delete=models.CASCADE)
 
     purchase_price = models.DecimalField(max_digits=10, decimal_places=2)
+
     bought_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("game", "player")
 
 
 class HighScore(models.Model):

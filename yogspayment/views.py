@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from django.conf import settings
 from yogsauth.decorators import player_required
-from yogsgame.models import Game
+from yogsgame.models import Game, GameAlreadyOwnedException
 
 
 def success(request):
@@ -19,9 +19,16 @@ def success(request):
 
     # verify the checksum
     if get_checksum != calc_checksum:
-        return render(request, 'game.djhtml', {"title": 'Payment Failed'})
+        return HttpResponseRedirect("%s?payment_error=1" %
+                                    reverse("game",
+                                            kwargs={"game_id": game.id}))
 
-    game.buy_with_user(user)
+    try:
+        game.buy_with_user(user)
+    except GameAlreadyOwnedException:
+        return HttpResponseRedirect("%s?already_bought=1" %
+                                    reverse("game",
+                                            kwargs={"game_id": game.id}))
 
     # Redirect back to game page to play the game
     return HttpResponseRedirect(reverse("game", kwargs={"game_id": game.id}))

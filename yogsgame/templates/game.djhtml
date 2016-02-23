@@ -86,6 +86,11 @@
             <strong>An error occurred while processing the payment.</strong>
         </div>
     {% endif %}
+    {% if request.GET.already_bought %}
+        <div class="alert alert-danger">
+            <strong>You already own the game.</strong>
+        </div>
+    {% endif %}
 
     {% if user_owns_game %}
     <iframe name="game_iframe" src="{{ game.url }}" width="300" height="300">
