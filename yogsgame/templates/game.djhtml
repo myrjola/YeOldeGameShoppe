@@ -111,7 +111,7 @@
         <input type="hidden" name="error_url" value="{{ host_url }}{% url 'error' %}" />
         <input type="hidden" name="checksum" value={{checksum}} />
         <input type="hidden" name="amount" value={{amount}} />
-        <input type="submit" value="Buy">
+        {% buttons submit="Buy" %}{% endbuttons %}
     </form>
     </div>
     {% endif %}
