@@ -1,3 +1,4 @@
+
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from django.contrib.auth.views import (login, logout_then_login,
@@ -55,6 +56,7 @@ urlpatterns = patterns(
     url(r'^all_games$', yogsgame.views.all_games, name='all_games'),
     url(r'^game/(?P<game_id>\d+)/submit_highscore$',
         yogsgame.views.submit_highscore, name='submit_highscore'),
+    url(r'^dev_stats$', yogsgame.views.dev_stats, name='dev_stats'),
 
     # yogspayment
     url(r'^shop/success$', yogspayment.views.success, name='success'),

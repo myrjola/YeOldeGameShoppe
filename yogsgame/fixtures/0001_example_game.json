@@ -116,6 +116,26 @@
     }
 },
 {
+    "pk": 2,
+    "model": "yogsgame.game",
+    "fields": {
+        "title": "Example game 2",
+        "price": 20.1,
+        "developer": 4,
+        "url": "/static/example_game2.html"
+    }
+},
+{
+    "pk": 3,
+    "model": "yogsgame.game",
+    "fields": {
+        "title": "Example game 3",
+        "price": 20.1,
+        "developer": 4,
+        "url": "/static/example_game.html"
+    }
+},
+{
     "pk": 1,
     "model": "yogsgame.gamelicense",
     "fields": {

@@ -94,7 +94,16 @@ def owned_games(request):
 
 def all_games(request):
     """A view that shows all games."""
-    context = {"games": Game.objects.all()}
+    found_games = None
+    if ('q' in request.GET) and request.GET['q'].strip():
+        query_string = request.GET['q']
+
+        found_games = Game.objects.filter(
+            title__icontains=query_string).order_by('title')
+    else:
+        found_games = Game.objects.all()
+
+    context = {"games": found_games}
     return render(request, 'all_games.djhtml', context=context)
 
 
@@ -109,3 +118,27 @@ def add_game(request):
         game.developer = request.user.developer
         game.save()
     return render(request, "addgame.djhtml", context)
+
+
+def search_games(request):
+    """A view that shows the search results."""
+
+@developer_required
+def dev_stats(request):
+    developer = request.user.developer
+    dev_all_games = Game.objects.filter(developer=developer)
+    all_stats = []
+    for i in dev_all_games:
+        all_stats.append((i.title,game_stats(i)))
+    context = {"stats":all_stats}
+    return render(request,"devstats.djhtml",context)
+
+def game_stats(game):
+    purchase_data = GameLicense.objects.filter(game=game).values('bought_at')
+    purchases = []
+    date_stats = {}
+    for i in purchase_data:
+        purchases.append(i['bought_at'].date())
+    purchases = Counter(purchases)
+    date_stats = purchases.items()
+    return date_stats
