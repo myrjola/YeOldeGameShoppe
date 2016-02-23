@@ -94,7 +94,16 @@ def owned_games(request):
 
 def all_games(request):
     """A view that shows all games."""
-    context = {"games": Game.objects.all()}
+    found_games = None
+    if ('q' in request.GET) and request.GET['q'].strip():
+        query_string = request.GET['q']
+
+        found_games = Game.objects.filter(
+            title__icontains=query_string).order_by('title')
+    else:
+        found_games = Game.objects.all()
+
+    context = {"games": found_games}
     return render(request, 'all_games.djhtml', context=context)
 
 
@@ -109,3 +118,7 @@ def add_game(request):
         game.developer = request.user.developer
         game.save()
     return render(request, "addgame.djhtml", context)
+
+
+def search_games(request):
+    """A view that shows the search results."""

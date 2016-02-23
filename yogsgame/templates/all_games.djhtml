@@ -2,11 +2,18 @@
 {% load bootstrap3 %}
 
 {% block content %}
+    <form>
+        Search:
+        <input type="text" name="q" value="">
+    </form>
     <ul>
         {% for game in games %}
             <li><a href="{% url 'game' game_id=game.pk %}">{{ game.title }}</a></li>
         {% empty %}
-            <li>No available games. We need more developers!</li>
+            <li>No games found.</li>
         {% endfor %}
     </ul>
+    {% if request.GET.q %}
+        <p>Searched for: {{request.GET.q }}</p>
+    {% endif %}
 {% endblock %}
