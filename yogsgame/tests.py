@@ -8,14 +8,15 @@ from selenium.common.exceptions import TimeoutException
 
 from yeoldegameshoppe.tests import YogsSeleniumTest
 
-from .models import Game, NotAPlayerException, HighScore
+from .models import (Game, NotAPlayerException, HighScore,
+                     GameAlreadyOwnedException)
 
 
 class GameTestCase(TestCase):
     fixtures = ['0001_example_game.json']
 
     def test_gamelicense_ownership_player(self):
-        """A Player should be able to own a game."""
+        """A Player should be able to own a game, but not two."""
         player_user = get_user_model().objects.get(username="player")
         game = Game.objects.all().first()
 
@@ -24,6 +25,9 @@ class GameTestCase(TestCase):
         game.buy_with_user(player_user)
 
         self.assertTrue(game.get_gamelicense_for_user(player_user))
+
+        with self.assertRaises(GameAlreadyOwnedException):
+            game.buy_with_user(player_user)
 
     def test_gamelicense_ownership_developer(self):
         """A Developer should not be able to own a game."""
