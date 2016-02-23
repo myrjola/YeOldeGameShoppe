@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
+from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -94,12 +95,20 @@ class BasicPlayerFunctionalityTestCase(YogsSeleniumTest):
 
         # Both scores should exist in the highscore list...
         self.selenium.switch_to_default_content()
-        top10 = self.selenium.find_element_by_css_selector('#top10')
-        self.assertIn("0", top10.text)
-        self.assertIn("10", top10.text)
+        wait = WebDriverWait(self.selenium, 3)
+        try:
+            wait.until(EC.text_to_be_present_in_element(
+                (By.ID, 'top10'),
+                'wealthyplayer 0 points'))
+            wait.until(EC.text_to_be_present_in_element(
+                (By.ID, 'top10'),
+                'wealthyplayer 10 points'))
+        except TimeoutException:
+            self.fail("High score not visible")
 
         # ... and in the database
         highscores = HighScore.objects.all()
+        self.assertEqual(2, len(highscores))
         highscore1 = highscores[0]
         self.assertEqual(game, highscore1.game)
         self.assertEqual(0, highscore1.score)
