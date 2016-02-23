@@ -1,0 +1,19 @@
+{% extends "base.djhtml" %}
+{% load bootstrap3 %}
+
+{% block content %}
+      {% for name,stat in stats %}
+          <li>{{name}} :
+          {% if not stat%}
+            <ul><li>no sales</li></ul>
+          {% else %}
+            <ul>
+            {% for date,count in stat %}
+              <li>{{date}}-{{count}}</li>
+            {% endfor %}
+            </ul>
+          {% endif %}
+          </li>
+      {% endfor %}
+
+{% endblock %}
