@@ -31,7 +31,7 @@ def game_view(request, game_id):
 
     checksumstr = "pid={}&sid={}&amount={}&token={}".format(pid, sid, amount,
                                                             secret_key)
-    checksum = md5(checksumstr.encode('ascii')).hexdigest()
+    checksum = md5(checksumstr.encode('ascii', 'ignore')).hexdigest()
 
     context = {
         'pid': pid,

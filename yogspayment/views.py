@@ -82,6 +82,6 @@ def process(request):
 
     checksumstr = "pid={}&ref={}&result={}&token={}".format(pid, ref, result,
                                                             secret_key)
-    calc_checksum = md5(checksumstr.encode('ascii')).hexdigest()
+    calc_checksum = md5(checksumstr.encode('ascii', 'ignore')).hexdigest()
 
     return [game, user, get_checksum, calc_checksum]
