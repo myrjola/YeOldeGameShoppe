@@ -49,6 +49,10 @@
                   {% endif %}
                   {% if  user.developer %}
                   <li>
+                      <a class="page-scroll" href="{% url 'dev_stats' %}">Inventory</a>
+                  </li>
+
+                  <li>
                       <a class="page-scroll" href="{% url 'addgame' %}">Add Game</a>
                   </li>
                   {% endif %}
