@@ -9,11 +9,12 @@ from yogsauth.decorators import player_required
 from yogsgame.models import Game, GameAlreadyOwnedException
 
 
+@player_required
 def success(request):
     get_checksum = request.GET.get('checksum', '')
     result = process(request)
     game = result[0]
-    user = result[1]
+    user = request.user
     get_checksum = result[2]
     calc_checksum = result[3]
 
@@ -51,7 +52,7 @@ def cancel(request):
                                         kwargs={"game_id": game.id}))
 
 
-@login_required
+@player_required
 def error(request):
     get_checksum = request.GET.get('checksum', '')
     result = process(request)
@@ -76,9 +77,8 @@ def process(request):
     getattr(settings, "PAYMENT_SECRET_KEY", None)
     splitpid = pid.split("a", 2)
     gameid = int(splitpid[0])
-    buyer = str(splitpid[2])
     game = get_object_or_404(Game, id=gameid)
-    user = get_user_model().objects.get(username=buyer)
+    user = request.user
 
     checksumstr = "pid={}&ref={}&result={}&token={}".format(pid, ref, result,
                                                             secret_key)

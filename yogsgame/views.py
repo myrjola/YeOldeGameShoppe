@@ -34,7 +34,7 @@ def game_view(request, game_id):
     checksum = md5(checksumstr.encode('ascii', 'ignore')).hexdigest()
 
     context = {
-        'pid': pid,
+        'pid': pid.encode('ascii', 'ignore'),
         'sid': sid,
         'amount': amount,
         'checksum': checksum,
