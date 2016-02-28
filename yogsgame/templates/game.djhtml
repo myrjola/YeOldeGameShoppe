@@ -74,7 +74,7 @@
         data-share="true"
         data-width="450"
         data-show-faces="true">
-    </div>
+    </div><br>
 
     {% if request.GET.payment_cancel %}
         <div class="alert alert-danger">
