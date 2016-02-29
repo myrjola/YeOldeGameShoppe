@@ -51,7 +51,10 @@ class Game(models.Model):
         If using local paths like '/example_game.html' the request is used to
         return the hostname.
         """
-        return self.url.split("/")[0] or get_host_url(request)
+        if (self.url.startswith("/")):
+            return get_host_url(request)
+        else:
+            return "/".join(self.url.split("/")[:3])
 
 
 class GameLicense(models.Model):
