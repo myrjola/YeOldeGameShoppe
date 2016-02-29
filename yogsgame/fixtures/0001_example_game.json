@@ -136,6 +136,16 @@
     }
 },
 {
+    "pk": 4,
+    "model": "yogsgame.game",
+    "fields": {
+        "title": "Tic-Tac-Toe",
+        "price": 1,
+        "developer": 4,
+        "url": "/static/tic-tac-toe.html"
+    }
+},
+{
     "pk": 1,
     "model": "yogsgame.gamelicense",
     "fields": {

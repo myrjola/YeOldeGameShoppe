@@ -93,7 +93,7 @@ function noughtsTurn() {
     }
 }
 
-$(document).ready( function() {
+$(document).ready(function() {
     "use strict";
 
     window.addEventListener("message", function(evt) {
