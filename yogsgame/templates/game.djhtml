@@ -25,7 +25,7 @@
          });
      }
 
-     $( document ).ready(reloadTop10);
+     $(document).ready(reloadTop10);
 
      // This is the callback for messages
      function receiveMessage(event)
@@ -64,6 +64,13 @@
              };
              window.frames["game_iframe"].postMessage(msg, "{{ game_hostname }}");
 
+         } else if (messageType === "SETTING") {
+             var width = event.data.options.width;
+             var height = event.data.options.height;
+             console.log("Resizing game iframe to " + width + "x" + height + ".")
+             $("[name='game_iframe']").height(height);
+             $("[name='game_iframe']").width(width);
+
          } else {
              console.log("Unknown message type " + messageType);
          }
@@ -96,7 +103,7 @@
     {% endif %}
 
     {% if user_owns_game %}
-    <iframe name="game_iframe" src="{{ game.url }}" width="300" height="300">
+    <iframe name="game_iframe" src="{{ game.url }}"
         <p>Your browser does not support iframes.</p>
     </iframe>
 

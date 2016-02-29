@@ -35,7 +35,7 @@ function resizeBoard() {
     });
     // Request the service to set the resolution of the
     // iframe correspondingly
-    var boardSize = width*3 + 4; // The borders are 4 pixels
+    var boardSize = width*3 + 30; // We need some padding to make it fit
     var message =  {
         messageType: "SETTING",
         options: {
