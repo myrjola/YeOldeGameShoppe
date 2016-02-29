@@ -30,6 +30,10 @@ function submitScore(score) {
 // Sets height to width.
 function resizeBoard() {
     var width = $('#tic-tac-toe td').width();
+    if (!width) {
+        // Width hasn't been initialized yet from CSS.
+        width = 150;
+    }
     $('#tic-tac-toe td').css({
         'height': width + 'px'
     });
