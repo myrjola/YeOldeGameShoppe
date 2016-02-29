@@ -33,7 +33,10 @@
          // For Chrome, the origin property is in the event.originalEvent object.
          var origin = event.origin || event.originalEvent.origin;
 
-         if (origin !== "{{ game_hostname }}") return;
+         if (origin !== "{{ game_hostname }}") {
+             console.log("Invalid origin!");
+             return;
+         }
 
          var messageType = event.data.messageType;
 
