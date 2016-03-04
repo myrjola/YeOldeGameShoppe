@@ -5,7 +5,7 @@ A Javascript game store, which can easily be deployed to Heroku.
 ## Submission document
 
 The required information for the submission can be found in the submission
-document [here](doc/YeOldeGameShoppeSubmissionDocument.pdf)
+document [here](/doc/YeOldeGameShoppeSubmissionDocument.pdf)
 
 ## Running Locally
 
